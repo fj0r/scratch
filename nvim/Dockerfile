@@ -1,10 +1,14 @@
-FROM fj0rd/io:base
+FROM fj0rd/io:base as assets
 RUN set -eux \
   ; curl -sSL https://deb.nodesource.com/setup_16.x | bash - \
   ; apt-get update \
   ; apt-get upgrade -y \
   ; DEBIAN_FRONTEND=noninteractive \
-  ; apt-get install -y --no-install-recommends gnupg nodejs build-essential \
+  ; apt-get install -y --no-install-recommends \
+        gnupg \
+        nodejs \
+        build-essential \
+        python3 python3-pip \
   \
   ; mkdir -p /opt/language-server \
   ; npm install -g quicktype \
