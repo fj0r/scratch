@@ -1,4 +1,4 @@
-FROM fj0rd/io:base
+FROM fj0rd/io:base as assets
 RUN set -eux \
   ; curl -sSL https://deb.nodesource.com/setup_16.x | bash - \
   ; apt-get update \
