@@ -1,7 +1,7 @@
 FROM fj0rd/io:base as assets
 RUN set -eux \
-  ; mkdir -p /xetc \
-  ; cfg_home=/xetc \
+  ; mkdir -p /target/etc \
+  ; cfg_home=/target/etc \
   ; curl -sSL https://deb.nodesource.com/setup_16.x | bash - \
   ; apt-get update \
   ; apt-get upgrade -y \
@@ -31,8 +31,9 @@ RUN set -eux \
   \
   ; nvim_url=$(curl -sSL https://api.github.com/repos/neovim/neovim/releases -H 'Accept: application/vnd.github.v3+json' \
              | jq -r '[.[]|select(.prerelease == false)][0].assets[].browser_download_url' | grep -v sha256sum | grep linux64) \
-  ; curl -sSL ${nvim_url} | tar zxf - -C /usr/local --strip-components=1 \
-  ; strip /usr/local/bin/nvim \
+  ; mkdir -p /target/usr/local \
+  ; curl -sSL ${nvim_url} | tar zxf - -C /target/usr/local --strip-components=1 \
+  ; strip /target/usr/local/bin/nvim \
   ; pip3 --no-cache-dir install \
         neovim neovim-remote \
   ; nvim_config_url=$(curl -sSL https://api.github.com/repos/fj0r/nvim-lua/releases -H 'Accept: application/vnd.github.v3+json' \
@@ -45,4 +46,4 @@ RUN set -eux \
 FROM scratch
 
 COPY --from=assets /opt /opt
-COPY --from=assets /xetc /etc
+COPY --from=assets /target /
