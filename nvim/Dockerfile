@@ -34,6 +34,8 @@ RUN set -eux \
   ; pip3 --no-cache-dir install \
         neovim neovim-remote \
   ; mkdir -p /opt/vim \
+  ; cfg_home=/etc/skel \
+  ; mkdir -p $cfg_home/.config \
   ; nvim_home=$cfg_home/.config/nvim \
   ; nvim_config_url=$(curl -sSL https://api.github.com/repos/fj0r/nvim-lua/releases -H 'Accept: application/vnd.github.v3+json' \
                     | jq -r '[.[]|select(.prerelease == false)][0].assets[].browser_download_url' | grep gz) \
