@@ -1,7 +1,6 @@
 FROM fj0rd/io:base as assets
 RUN set -eux \
   ; mkdir -p /target/etc/helix \
-  ; cfg_home=/target/etc \
   ; mkdir -p /target/usr/local/bin \
   \
   ; helix_url=$(curl -sSL https://api.github.com/repos/helix-editor/helix/releases -H 'Accept: application/vnd.github.v3+json' \

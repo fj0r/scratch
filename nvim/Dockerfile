@@ -1,7 +1,7 @@
 FROM fj0rd/io:base as assets
+ENV XDG_CONFIG_HOME=/target/etc
 RUN set -eux \
-  ; mkdir -p /target/etc \
-  ; cfg_home=/target/etc \
+  ; mkdir -p $XDG_CONFIG_HOME \
   ; curl -sSL https://deb.nodesource.com/setup_16.x | bash - \
   ; apt-get update \
   ; apt-get upgrade -y \
@@ -38,7 +38,7 @@ RUN set -eux \
         neovim neovim-remote \
   ; nvim_config_url=$(curl -sSL https://api.github.com/repos/fj0r/nvim-lua/releases -H 'Accept: application/vnd.github.v3+json' \
                     | jq -r '[.[]|select(.prerelease == false)][0].assets[].browser_download_url' | grep gz) \
-  ; curl -sSL ${nvim_config_url} | tar zxf - -C $cfg_home
+  ; curl -sSL ${nvim_config_url} | tar zxf - -C $XDG_CONFIG_HOME
 
 
 
