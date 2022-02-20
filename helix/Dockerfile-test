@@ -1,4 +1,4 @@
 FROM fj0rd/scratch:helix as helix
 
 FROM io
-COPY --from=nvim / /helix
+COPY --from=helix / /helix
