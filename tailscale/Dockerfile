@@ -8,6 +8,8 @@ RUN set -eux \
   ; cd tailscale \
   ; go run github.com/tailscale/depaware --update tailscale.com/cmd/tailscaled \
   ; go run github.com/tailscale/depaware --update tailscale.com/cmd/tailscale \
+  ; GOOS=linux GOARCH=amd64 go install tailscale.com/cmd/derper \
+  ; mv $GOPATH/bin/derper /target \
   ; GOOS=linux GOARCH=amd64 go install tailscale.com/cmd/tailscale tailscale.com/cmd/tailscaled \
   ; mv $GOPATH/bin/tailscale $GOPATH/bin/tailscaled /target/linux_amd64 \
   ; GOOS=windows GOARCH=amd64 go install tailscale.com/cmd/tailscale tailscale.com/cmd/tailscaled \
