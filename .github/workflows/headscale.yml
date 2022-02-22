@@ -7,7 +7,7 @@ name: tailscale
 
 on:
   push:
-    branches: [ tailscale ]
+    branches: [ main, tailscale ]
 
 env:
   REGISTRY: docker.io
