@@ -1,7 +1,8 @@
-FROM dropbear as dropbear
+FROM fj0rd/scratch:dropbear-alpine as dropbear
 
 FROM alpine:3
 COPY --from=dropbear / /
+COPY --from=dropbear / /dropbear
 
 ENV pubkey=
 RUN set -eux \
@@ -9,6 +10,6 @@ RUN set -eux \
   # alpine
   ; apk add libcrypto3 \
   ; mkdir /etc/dropbear ~/.ssh \
-  ; echo $pubkey > ~/.ssh/authorized_keys
+  ; echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK2Q46WeaBZ9aBkS3TF2n9laj1spUkpux/zObmliHUOI' > ~/.ssh/authorized_keys
 
 ENTRYPOINT /usr/bin/dropbear -REFms -p 22
