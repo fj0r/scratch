@@ -47,6 +47,24 @@ jobs:
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
 
+      - name: Build dropbear buster
+        uses: docker/build-push-action@v2
+        with:
+          context: dropbear
+          file: dropbear/buster.Dockerfile
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:dropbear-buster
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Build dropbear stretch
+        uses: docker/build-push-action@v2
+        with:
+          context: dropbear
+          file: dropbear/stretch.Dockerfile
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:dropbear-stretch
+          labels: ${{ steps.meta.outputs.labels }}
+
       - name: Build dropbear alpine
         uses: docker/build-push-action@v2
         with:
