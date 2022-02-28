@@ -4,7 +4,7 @@ RUN set -eux \
   ; apt-get update \
   ; DEBIAN_FRONTEND=noninteractive \
     apt-get install -y --no-install-recommends \
-        git gnupg build-essential \
+        git gnupg build-essential curl jq ca-certificates\
         automake autoconf \
         # libz libcrypto
         libssl-dev zlib1g-dev \
