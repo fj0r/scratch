@@ -18,10 +18,10 @@ RUN set -eux \
   ; curl -sSL ${dropbear_url} | tar zxf - -C dropbear --strip-components=1 \
   ; cd dropbear \
   ; autoconf && autoheader && ./configure --enable-static \
-  # dbclient dropbearkey dropbearconvert
-  ; make PROGRAMS="dropbear scp" \
+  # dropbearkey dropbearconvert
+  ; make PROGRAMS="dropbear dbclient scp" \
   ; mkdir -p /target/bin \
-  #; mv dbclient /target/bin/ssh \
+  ; mv dbclient /target/bin/ssh \
   # dropbearkey dropbearconvert
   ; mv dropbear scp /target/bin
 
