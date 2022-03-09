@@ -7,7 +7,8 @@ RUN set -eux \
   ; git clone https://github.com/alacritty/alacritty.git \
   ; cd alacritty \
   ; cargo build --release \
-  ; bin_file=$(whereis alacritty | awk '{print $2}') \
+  #; bin_file=$(whereis alacritty | awk '{print $2}') \
+  ; bin_file=target/release/alacritty \
   ; strip -s $bin_file \
   ; cp $bin_file /target
 
