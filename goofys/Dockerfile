@@ -1,4 +1,4 @@
-FROM fj0rd/io:base as assets
+FROM fj0rd/io as assets
 
 RUN set -eux \
   ; mkdir -p /target \
