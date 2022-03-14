@@ -1,10 +1,14 @@
 FROM fj0rd/io:base as assets
 
 RUN set -eux \
-  ; mkdir -p /opt/assets \
+  ; mkdir -p /target \
   \
   ; goofys_url=$(curl -sSL https://api.github.com/repos/kahing/goofys/releases -H 'Accept: application/vnd.github.v3+json' \
              | jq -r '[.[]|select(.prerelease == false)][0].assets[].browser_download_url') \
-  ; curl -sSLo /opt/asssets/goofys ${goofys_url} \
-  ; chmod +x /opt/asssets/goofys \
-  ; strip -s /opt/asssets/goofys
+  ; curl -sSLo /target/goofys ${goofys_url} \
+  ; chmod +x /target/goofys \
+  ; strip -s /target/goofys
+
+FROM scratch
+
+COPY --from=assets /target/goofys /usr/local/bin/goofys
