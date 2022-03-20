@@ -1,4 +1,4 @@
-name: tailscale
+name: goofys
 
 # This workflow uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
@@ -7,7 +7,7 @@ name: tailscale
 
 on:
   push:
-    branches: [ tailscale ]
+    branches: [ main, goofys ]
 
 env:
   REGISTRY: docker.io
@@ -47,12 +47,12 @@ jobs:
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
 
-      - name: Build tailscale
+      - name: Build goofys
         uses: docker/build-push-action@v2
         with:
-          context: tailscale
+          context: goofys
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:tailscale
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:goofys
           labels: ${{ steps.meta.outputs.labels }}
 
 
