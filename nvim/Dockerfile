@@ -40,9 +40,6 @@ RUN set -eux \
                     | jq -r '[.[]|select(.prerelease == false)][0].assets[].browser_download_url' | grep gz) \
   ; curl -sSL ${nvim_config_url} | tar zxf - -C $XDG_CONFIG_HOME
 
-
-
-
 FROM scratch
 
 COPY --from=assets /opt /opt
