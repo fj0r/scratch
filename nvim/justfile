@@ -1,0 +1,2 @@
+build:
+    podman build . -t nvim -f core.Dockerfile
