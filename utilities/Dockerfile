@@ -13,7 +13,7 @@ RUN set -eux \
   ; find /opt/assets -type f -exec grep -IL . "{}" \; | xargs -L 1 strip -s
 
 
-FROM debian:bullseye-slim as assets
+FROM ubuntu:jammy as assets
 
 COPY --from=rs /opt/assets /opt/assets/
 RUN set -eux \

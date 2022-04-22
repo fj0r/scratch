@@ -1,4 +1,4 @@
-FROM debian:bullseye as build
+FROM ubuntu:jammy as build
 
 RUN set -eux \
   ; apt-get update \
