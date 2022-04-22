@@ -1,4 +1,4 @@
-name: nvim
+name: alacritty
 
 # This workflow uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
@@ -7,7 +7,7 @@ name: nvim
 
 on:
   push:
-    branches: [ nvim ]
+    branches: [ drill ]
 
 env:
   REGISTRY: docker.io
@@ -47,11 +47,11 @@ jobs:
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
 
-      - name: Build nvim
+      - name: Build drill
         uses: docker/build-push-action@v2
         with:
-          context: nvim
+          context: drill
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:nvim
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:drill
           labels: ${{ steps.meta.outputs.labels }}
 
