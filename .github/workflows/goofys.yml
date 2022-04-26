@@ -7,7 +7,7 @@ name: goofys
 
 on:
   push:
-    branches: [ main, goofys ]
+    branches: [ goofys ]
 
 env:
   REGISTRY: docker.io
