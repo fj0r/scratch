@@ -10,7 +10,7 @@ RUN set -eux \
   #; bin_file=$(whereis alacritty | awk '{print $2}') \
   ; bin_file=target/release/alacritty \
   ; strip -s $bin_file \
-  ; cp $bin_file /target
+  ; cp $bin_file /target/alacritty
 
 FROM scratch
 

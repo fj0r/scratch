@@ -1,21 +1,17 @@
+FROM fj0rd/scratch:openssl1 as openssl
 FROM fj0rd/io:rs as rs
 
+ENV PKG_CONFIG_ALLOW_CROSS=1
+ENV OPENSSL_STATIC=true
+ENV OPENSSL_DIR=/musl
+
+COPY --from=openssl / /
 RUN set -eux \
-  ; mkdir /musl \
-  ; ln -s /usr/include/x86_64-linux-gnu/asm /usr/include/x86_64-linux-musl/asm \
-  ; ln -s /usr/include/asm-generic /usr/include/x86_64-linux-musl/asm-generic \
-  ; ln -s /usr/include/linux /usr/include/x86_64-linux-musl/linux \
-  ; wget https://github.com/openssl/openssl/archive/OpenSSL_1_1_1n.tar.gz \
-  ; tar zxf OpenSSL_1_1_1n.tar.gz \
-  ; cd openssl-OpenSSL_1_1_1n/ \
-  ; CC="musl-gcc -fPIE -pie" ./Configure no-shared no-async --prefix=/musl --openssldir=/musl/ssl linux-x86_64 \
-  ; make depend && make -j$(nproc) && make install \
-  \
   ; mkdir -p /opt/assets \
   ; git clone https://github.com/ogham/dog.git \
   ; cd dog \
   ; cargo build --release --target=x86_64-unknown-linux-musl \
-  ; mv target/release/dog /opt/assets \
+  ; mv target/x86_64-unknown-linux-musl/release/dog /opt/assets \
   \
   #; cargo install flamegraph \
   #; mv $(whereis flamegraph | awk '{print $2}') /opt/assets \
