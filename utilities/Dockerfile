@@ -1,6 +1,8 @@
 FROM fj0rd/io:rs as rs
 
 RUN set -eux \
+  ; apt-get update \
+  ; apt-get install -y --no-install-recommends libssl-dev \
   ; mkdir -p /opt/assets \
   ; git clone https://github.com/ogham/dog.git \
   ; cd dog \
