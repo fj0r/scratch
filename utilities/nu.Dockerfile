@@ -45,10 +45,10 @@ RUN set -eux \
   ; just_url=$(curl -sSL https://api.github.com/repos/casey/just/releases -H 'Accept: application/vnd.github.v3+json' \
           | jq -r '[.[]|select(.prerelease == false)][0].assets[].browser_download_url' | grep x86_64-unknown-linux-musl) \
   ; curl -sSL ${just_url} | tar zxf - -C /opt/assets just \
-  \
-  ; websocat_url=$(curl -sSL https://api.github.com/repos/vi/websocat/releases -H 'Accept: application/vnd.github.v3+json' \
-          | jq -r '[.[]|select(.prerelease == false)][0].assets[].browser_download_url' | grep linux64) \
-  ; curl -sSLo /opt/assets/websocat ${websocat_url} ; chmod +x /opt/assets/websocat \
+  #\
+  #; websocat_url=$(curl -sSL https://api.github.com/repos/vi/websocat/releases -H 'Accept: application/vnd.github.v3+json' \
+  #        | jq -r '[.[]|select(.prerelease == false)][0].assets[].browser_download_url' | grep linux64) \
+  #; curl -sSLo /opt/assets/websocat ${websocat_url} ; chmod +x /opt/assets/websocat \
   \
   ; find /opt/assets -type f -exec grep -IL . "{}" \; | xargs -L 1 strip -s
 
