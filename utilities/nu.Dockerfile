@@ -31,8 +31,8 @@ RUN set -eux \
   ; mkdir -p /opt/assets \
   \
   ; nu_url=$(curl -sSL https://api.github.com/repos/nushell/nushell/releases -H 'Accept: application/vnd.github.v3+json' \
-          | jq -r '[.[]|select(.prerelease == false)][0].assets[].browser_download_url' | grep linux) \
-  ; curl -sSL ${nu_url} | tar zxf - -C /opt/assets --strip-components=2 --wildcards '*/*/nu*' \
+          | jq -r '[.[]|select(.prerelease == false)][0].assets[].browser_download_url' | grep x86_64-unknown-linux-musl) \
+  ; curl -sSL ${nu_url} | tar zxf - -C /opt/assets --wildcards 'nu*' \
   \
   ; zoxide_url=$(curl -sSL https://api.github.com/repos/ajeetdsouza/zoxide/releases -H 'Accept: application/vnd.github.v3+json' \
           | jq -r '[.[]|select(.prerelease == false)][0].assets[].browser_download_url' | grep x86_64-unknown-linux-musl) \
