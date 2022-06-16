@@ -7,7 +7,7 @@ name: utilities
 
 on:
   push:
-    branches: [ main, utilities ]
+    branches: [ utilities ]
 
 env:
   REGISTRY: docker.io
