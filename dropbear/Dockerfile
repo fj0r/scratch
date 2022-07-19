@@ -18,12 +18,10 @@ RUN set -eux \
   ; curl -sSL ${dropbear_url} | tar zxf - -C dropbear --strip-components=1 \
   ; cd dropbear \
   ; autoconf && autoheader && ./configure --enable-static \
-  # dropbearkey dropbearconvert
-  ; make PROGRAMS="dropbear dbclient scp" \
+  ; make PROGRAMS="dropbear dbclient scp dropbearkey dropbearconvert" \
   ; mkdir -p /target/bin \
   ; mv dbclient /target/bin/ssh \
-  # dropbearkey dropbearconvert
-  ; mv dropbear scp /target/bin
+  ; mv dropbear scp dropbearkey dropbearconvert /target/bin
 
 RUN set -eux \
   ; git clone --depth=1 https://github.com/openssh/openssh-portable.git \
