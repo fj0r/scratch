@@ -34,6 +34,10 @@ RUN set -eux \
           | jq -r '[.[]|select(.prerelease == false)][0].assets[].browser_download_url' | grep x86_64-unknown-linux-musl) \
   ; curl -sSL ${nu_url} | tar zxf - -C /opt/assets --wildcards 'nu*' \
   \
+  ; zellij_url=$(curl -sSL https://api.github.com/repos/zellij-org/zellij/releases -H 'Accept: application/vnd.github.v3+json' \
+          | jq -r '[.[]|select(.prerelease == false)][0].assets[].browser_download_url' | grep x86_64-unknown-linux-musl | grep -v sha256sum) \
+  ; curl -sSL ${zellij_url} | tar zxf - -C /opt/assets \
+  \
   ; zoxide_url=$(curl -sSL https://api.github.com/repos/ajeetdsouza/zoxide/releases -H 'Accept: application/vnd.github.v3+json' \
           | jq -r '[.[]|select(.prerelease == false)][0].assets[].browser_download_url' | grep x86_64-unknown-linux-musl) \
   ; curl -sSL ${zoxide_url} | tar zxf - -C /opt/assets zoxide \
