@@ -8,4 +8,4 @@ RUN set -eux \
   ; mkdir -p /etc/dropbear ~/.ssh \
   ; echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK2Q46WeaBZ9aBkS3TF2n9laj1spUkpux/zObmliHUOI' > ~/.ssh/authorized_keys
 
-ENTRYPOINT /usr/bin/dropbear -REFems -p 22
+ENTRYPOINT /usr/bin/dropbear -REFems -p 22 -K 300 -I 600
