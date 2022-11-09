@@ -32,7 +32,7 @@ RUN set -eux \
   \
   ; nu_url=$(curl -sSL https://api.github.com/repos/nushell/nushell/releases -H 'Accept: application/vnd.github.v3+json' \
           | jq -r '[.[]|select(.prerelease == false)][0].assets[].browser_download_url' | grep x86_64-unknown-linux-musl) \
-  ; curl -sSL ${nu_url} | tar zxf - -C /opt/assets --wildcards 'nu*' \
+  ; curl -sSL ${nu_url} | tar zxf - -C /opt/assets --strip-components=1 --wildcards '*/nu*' \
   \
   ; zoxide_url=$(curl -sSL https://api.github.com/repos/ajeetdsouza/zoxide/releases -H 'Accept: application/vnd.github.v3+json' \
           | jq -r '[.[]|select(.prerelease == false)][0].assets[].browser_download_url' | grep x86_64-unknown-linux-musl) \
