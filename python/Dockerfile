@@ -138,9 +138,7 @@ RUN set -eux; \
 		"pip==$PYTHON_PIP_VERSION" \
 		"setuptools==$PYTHON_SETUPTOOLS_VERSION" \
 	; \
-	rm -f get-pip.py; \
-	\
-	pip --version
+	rm -f get-pip.py
 
 RUN set -eux \
   ; mkdir -p /target \
