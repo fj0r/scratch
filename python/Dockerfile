@@ -3,7 +3,7 @@ FROM debian:bullseye-slim as build
 
 ENV PYTHON_VERSION 3.11.0
 # ensure local python is preferred over distribution python
-ENV PATH /opt/python/bin:/usr/local/bin:$PATH
+ENV PATH /opt/python/bin:$PATH
 ENV LD_LIBRARY_PATH /opt/python/lib:$LD_LIBRARY_PATH
 
 # http://bugs.python.org/issue19846
@@ -75,7 +75,7 @@ RUN set -eux; \
 	cd /; \
 	rm -rf /usr/src/python; \
 	\
-	find /usr/local -depth \
+	find /opt/python -depth \
 		\( \
 			\( -type d -a \( -name test -o -name tests -o -name idle_test \) \) \
 			-o \( -type f -a \( -name '*.pyc' -o -name '*.pyo' -o -name 'libpython*.a' \) \) \
@@ -86,7 +86,7 @@ RUN set -eux; \
 	\
 	apt-mark auto '.*' > /dev/null; \
 	apt-mark manual $savedAptMark; \
-	find /usr/local -type f -executable -not \( -name '*tkinter*' \) -exec ldd '{}' ';' \
+	find /opt/python -type f -executable -not \( -name '*tkinter*' \) -exec ldd '{}' ';' \
 		| awk '/=>/ { print $(NF-1) }' \
 		| sort -u \
 		| xargs -r dpkg-query --search \
@@ -99,13 +99,13 @@ RUN set -eux; \
 	\
 	python3 --version
 
-# make some useful symlinks that are expected to exist ("/usr/local/bin/python" and friends)
+# make some useful symlinks that are expected to exist ("/opt/python/bin/python" and friends)
 RUN set -eux; \
 	for src in idle3 pydoc3 python3 python3-config; do \
 		dst="$(echo "$src" | tr -d 3)"; \
-		[ -s "/usr/local/bin/$src" ]; \
-		[ ! -e "/usr/local/bin/$dst" ]; \
-		ln -svT "$src" "/usr/local/bin/$dst"; \
+		[ -s "/opt/python/bin/$src" ]; \
+		[ ! -e "/opt/python/bin/$dst" ]; \
+		ln -svT "$src" "/opt/python/bin/$dst"; \
 	done
 
 # if this is called "PIP_VERSION", pip explodes with "ValueError: invalid truth value '<VERSION>'"
