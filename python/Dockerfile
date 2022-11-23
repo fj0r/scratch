@@ -3,7 +3,7 @@ FROM debian:bullseye-slim as build
 
 ENV PYTHON_VERSION 3.11.0
 # ensure local python is preferred over distribution python
-ENV PATH /usr/local/bin:$PATH
+ENV PATH /opt/python/bin:/usr/local/bin:$PATH
 
 # http://bugs.python.org/issue19846
 # > At the moment, setting "LANG=C" on a Linux system *fundamentally breaks Python 3*, and that's not OK.
@@ -50,7 +50,7 @@ RUN set -eux; \
 	; \
 	\
 	mkdir -p /usr/src/python; \
-	curl -sSL "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz" | tar -xf - -C /usr/src/python --strip-components=1; \
+	curl -sSL "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz" | tar -Jxf - -C /usr/src/python --strip-components=1; \
 	\
 	cd /usr/src/python; \
 	gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)"; \
