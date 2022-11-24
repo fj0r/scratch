@@ -26,11 +26,8 @@ RUN set -eux; \
 
 ENV PYTHON_VERSION 3.11.0
 
-COPY --from=musl /opt/musl /
+COPY --from=musl / /
 RUN set -eux; \
-	CC="/opt/musl/bin/musl-gcc"; \
-	$CC --version; \
-	\
 	savedAptMark="$(apt-mark showmanual)"; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
@@ -55,6 +52,8 @@ RUN set -eux; \
 		xz-utils \
 		zlib1g-dev \
 	; \
+	CC="/opt/musl/bin/musl-gcc"; \
+	$CC --version; \
 	\
 	mkdir -p /usr/src/python; \
 	curl -sSL "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz" | tar -Jxf - -C /usr/src/python --strip-components=1; \
