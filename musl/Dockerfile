@@ -6,8 +6,7 @@ RUN set -eux; \
 		ca-certificates \
 		netbase \
 		tzdata \
-        gcc \
-        make \
+		build-essential \
 		zstd \
         ripgrep \
 		curl \

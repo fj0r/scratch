@@ -26,7 +26,7 @@ RUN set -eux; \
 
 ENV PYTHON_VERSION 3.11.0
 
-COPY --from=musl / /
+COPY --from=musl /opt/musl /
 RUN set -eux; \
 	CC="/opt/musl/bin/musl-gcc"; \
 	$CC --version; \
