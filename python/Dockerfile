@@ -17,6 +17,8 @@ RUN set -eux; \
 		netbase \
 		tzdata \
 		zstd \
+		gcc \
+		make \
 		ripgrep \
 		curl \
 		jq \
@@ -45,7 +47,6 @@ RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
 		dpkg-dev \
-		gcc \
 		gnupg dirmngr \
 		libbluetooth-dev \
 		libbz2-dev \
@@ -58,7 +59,6 @@ RUN set -eux; \
 		libreadline-dev \
 		libsqlite3-dev \
 		libssl-dev \
-		make \
 		tk-dev \
 		uuid-dev \
 		wget \
@@ -70,10 +70,8 @@ RUN set -eux; \
 	curl -sSL "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz" | tar -Jxf - -C /usr/src/python --strip-components=1; \
 	\
 	cd /usr/src/python; \
-	gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)"; \
 	./configure \
 	    --prefix=/opt/python \
-		--build="$gnuArch" \
 		--enable-loadable-sqlite-extensions \
 		--enable-optimizations \
 		--enable-option-checking=fatal \
