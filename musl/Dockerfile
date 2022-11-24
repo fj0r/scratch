@@ -12,6 +12,7 @@ RUN set -eux; \
         ripgrep \
 		curl \
 		jq \
+        tree \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
@@ -23,7 +24,8 @@ RUN set -eux \
   ; cd /opt/musl-src \
   ; ./configure --prefix=/opt/musl --disable-shared \
   ; make \
-  ; make install
+  ; make install \
+  ; tree /opt/musl
 
 FROM scratch
 COPY --from=build /opt/musl /opt/musl
