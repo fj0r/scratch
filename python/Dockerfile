@@ -17,11 +17,26 @@ RUN set -eux; \
 		netbase \
 		tzdata \
 		zstd \
+		ripgrep \
 		curl \
 		jq \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
+# musl
+RUN set -eux \
+  ; mkdir -p /opt/musl \
+  ; mkdir -p /opt/musl-src \
+  ; musl_ver=$(curl -sSL https://musl.libc.org | rg 'Latest release: <a href="(.+)">' -or '$1') \
+  ; curl -sSL https://musl.libc.org/${musl_ver} | tar zxf - -C /opt/musl-src --strip-components=1 \
+  ; cd /opt/musl-src \
+  ; ./configure --prefix=/opt/musl --disable-shared \
+  ; make \
+  ; make install
+
+ENV CC /opt/musl/bin/musl-gcc
+
+# python
 ENV PYTHON_VERSION 3.11.0
 
 RUN set -eux; \
@@ -62,10 +77,13 @@ RUN set -eux; \
 		--enable-loadable-sqlite-extensions \
 		--enable-optimizations \
 		--enable-option-checking=fatal \
-		--enable-shared \
 		--with-lto \
 		--with-system-expat \
 		--without-ensurepip \
+		--disable-shared \
+		LDFLAGS="-static" \
+		CFLAGS="-static" \
+		CPPFLAGS="-static" \
 	; \
 	nproc="$(nproc)"; \
 	make -j "$nproc" \
