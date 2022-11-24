@@ -1,3 +1,5 @@
+FROM fj0rd/scratch:musl as musl
+
 # https://raw.githubusercontent.com/docker-library/python/master/3.11/slim-bullseye/Dockerfile
 FROM debian:bullseye-slim as build
 
@@ -24,7 +26,10 @@ RUN set -eux; \
 
 ENV PYTHON_VERSION 3.11.0
 
+COPY --from=musl / /
 RUN set -eux; \
+	CC="/opt/musl/bin/musl-gcc"; \
+	$CC --version; \
 	\
 	savedAptMark="$(apt-mark showmanual)"; \
 	apt-get update; \
