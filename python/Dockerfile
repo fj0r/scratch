@@ -17,28 +17,11 @@ RUN set -eux; \
 		netbase \
 		tzdata \
 		zstd \
-		gcc \
-		make \
-		ripgrep \
 		curl \
 		jq \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
-# musl
-RUN set -eux \
-  ; mkdir -p /opt/musl \
-  ; mkdir -p /opt/musl-src \
-  ; musl_ver=$(curl -sSL https://musl.libc.org | rg 'Latest release: <a href="(.+)">' -or '$1') \
-  ; curl -sSL https://musl.libc.org/${musl_ver} | tar zxf - -C /opt/musl-src --strip-components=1 \
-  ; cd /opt/musl-src \
-  ; ./configure --prefix=/opt/musl --disable-shared \
-  ; make \
-  ; make install
-
-ENV CC /opt/musl/bin/musl-gcc
-
-# python
 ENV PYTHON_VERSION 3.11.0
 
 RUN set -eux; \
@@ -47,6 +30,7 @@ RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
 		dpkg-dev \
+		gcc \
 		gnupg dirmngr \
 		libbluetooth-dev \
 		libbz2-dev \
@@ -59,6 +43,7 @@ RUN set -eux; \
 		libreadline-dev \
 		libsqlite3-dev \
 		libssl-dev \
+		make \
 		tk-dev \
 		uuid-dev \
 		wget \
@@ -70,8 +55,10 @@ RUN set -eux; \
 	curl -sSL "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz" | tar -Jxf - -C /usr/src/python --strip-components=1; \
 	\
 	cd /usr/src/python; \
+	gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)"; \
 	./configure \
 	    --prefix=/opt/python \
+		--build="$gnuArch" \
 		--enable-loadable-sqlite-extensions \
 		--enable-optimizations \
 		--enable-option-checking=fatal \
