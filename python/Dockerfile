@@ -28,11 +28,13 @@ RUN set -eux; \
 
 COPY --from=bootstrap /opt/python /python
 COPY --from=musl / /
+ENV PATH /opt/musl/bin:$PATH
 RUN set -eux; \
 	savedAptMark="$(apt-mark showmanual)"; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
 		dpkg-dev \
+		gcc \
 		gnupg dirmngr \
 		libbluetooth-dev \
 		libbz2-dev \
@@ -45,6 +47,7 @@ RUN set -eux; \
 		libreadline-dev \
 		libsqlite3-dev \
 		libssl-dev \
+		libssl3-dev \
 		make \
 		tk-dev \
 		uuid-dev \
