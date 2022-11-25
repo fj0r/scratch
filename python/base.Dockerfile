@@ -65,13 +65,12 @@ RUN set -eux; \
 		--with-system-expat \
 		--without-ensurepip \
 		--disable-shared \
-		#LDFLAGS="-static" \
-		#CFLAGS="-static" \
-		#CPPFLAGS="-static" \
 	; \
 	nproc="$(nproc)"; \
 	make -j "$nproc" \
-		LDFLAGS="-Wl,--strip-all" \
+		LDFLAGS="-Wl,--strip-all,-static" \
+		CFLAGS="-static" \
+		CPPFLAGS="-static" \
 	; \
 	make install; \
 	\
