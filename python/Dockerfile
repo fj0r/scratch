@@ -29,6 +29,7 @@ RUN set -eux; \
 COPY --from=bootstrap /opt/python /python
 COPY --from=musl /opt/musl /opt/musl
 ENV PATH /opt/musl/bin:$PATH
+ENV OPENSSL_DIR /opt/musl
 RUN set -eux; \
 	savedAptMark="$(apt-mark showmanual)"; \
 	apt-get update; \

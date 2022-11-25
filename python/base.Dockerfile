@@ -68,9 +68,7 @@ RUN set -eux; \
 	; \
 	nproc="$(nproc)"; \
 	make -j "$nproc" \
-		LDFLAGS="-Wl,--strip-all,-static" \
-		CFLAGS="-static" \
-		CPPFLAGS="-static" \
+		LDFLAGS="-Wl,--strip-all" \
 	; \
 	make install; \
 	\
