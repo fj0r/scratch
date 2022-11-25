@@ -71,6 +71,7 @@ RUN set -eux; \
 		--enable-option-checking=fatal \
 		--with-lto \
 		--with-system-expat \
+		--with-system-ffi \
 		--without-ensurepip \
 		--disable-shared \
 		--disable-ipv6 \
