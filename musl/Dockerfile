@@ -28,6 +28,9 @@ RUN set -eux \
   ; make install \
   ; tree /opt/musl
 
+RUN set -eux \
+  ; curl -sSL https://musl.cc/x86_64-linux-musl-cross.tgz | tar zxf - -C /opt/musl --strip-components=1
+
 ENV PKG_CONFIG_ALLOW_CROSS=1
 ENV OPENSSL_STATIC=true
 #ENV OPENSSL_DIR=/opt/musl
@@ -44,7 +47,7 @@ RUN set -eux \
   ; openssl_ver=$(curl -sSL https://github.com/openssl/openssl/tags | rg '>(OpenSSL_1.+)</a>' -or '$1' | head -n 1) \
   ; curl -sSL https://github.com/openssl/openssl/archive/${openssl_ver}.tar.gz | tar zxf - -C /opt/openssl-src --strip-components=1 \
   ; cd /opt/openssl-src \
-  ; CC="/opt/musl/bin/musl-gcc -fPIE -pie" \
+  ; CC="/opt/musl/bin/x86_64-linux-musl-gcc -fPIE -pie" \
     ./Configure \
         --prefix=/opt/musl \
         --openssldir=/opt/musl/ssl \
