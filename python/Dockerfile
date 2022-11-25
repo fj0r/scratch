@@ -61,7 +61,7 @@ RUN set -eux; \
 	cd /usr/src/python; \
 	./configure \
 	    --prefix=/opt/python \
-		--build="x86_64-unknown-linux-musl" \
+		#--build="x86_64-linux-musl" \
 		--enable-loadable-sqlite-extensions \
 		--enable-optimizations \
 		--enable-option-checking=fatal \
