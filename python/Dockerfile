@@ -52,7 +52,7 @@ RUN set -eux; \
 		xz-utils \
 		zlib1g-dev \
 	; \
-	CC="/opt/musl/bin/musl-gcc"; \
+	CC="/opt/musl/bin/musl-gcc -fPIE -pie"; \
 	$CC --version; \
 	\
 	mkdir -p /usr/src/python; \
