@@ -59,5 +59,5 @@ RUN set -eux \
   ; make depend && make -j$(nproc) && make install \
   ; tree
 
-FROM scratch
+FROM ubuntu
 COPY --from=build /opt/musl /opt/musl
