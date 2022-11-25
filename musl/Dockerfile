@@ -12,6 +12,8 @@ RUN set -eux; \
 		curl \
 		jq \
         tree \
+        \
+        linux-libc-dev \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
