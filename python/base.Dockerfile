@@ -1,6 +1,3 @@
-FROM fj0rd/scratch:py-test as bootstrap
-FROM fj0rd/scratch:musl as musl
-
 # https://raw.githubusercontent.com/docker-library/python/master/3.11/slim-bullseye/Dockerfile
 FROM debian:bullseye-slim as build
 
@@ -26,13 +23,10 @@ RUN set -eux; \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
-COPY --from=bootstrap /opt/python /python
-COPY --from=musl / /
 RUN set -eux; \
 	savedAptMark="$(apt-mark showmanual)"; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
-		binutils-multiarch \
 		dpkg-dev \
 		gcc \
 		gnupg dirmngr \
@@ -55,10 +49,6 @@ RUN set -eux; \
 		xz-utils \
 		zlib1g-dev \
 	; \
-	ln -s /usr/bin/readelf /usr/bin/i386-linux-gnu-readelf; \
-	CC="/opt/musl/bin/musl-gcc -fPIE -pie"; \
-	$CC --version; \
-	\
 	mkdir -p /usr/src/python; \
 	python_url=$(curl -sSL https://www.python.org/downloads/ | rg '<a.+href="(.+xz)">Download Python' -or '$1'); \
 	curl -sSL $python_url | tar -Jxf - -C /usr/src/python --strip-components=1; \
@@ -68,8 +58,6 @@ RUN set -eux; \
 	./configure \
 	    --prefix=/opt/python \
 		--build="$gnuArch" \
-        --host=x86_64-unknown-linux-musl \
-        --with-build-python=/python/bin/python3 \
 		--enable-loadable-sqlite-extensions \
 		--enable-optimizations \
 		--enable-option-checking=fatal \
@@ -158,9 +146,5 @@ RUN set -eux; \
 	\
 	pip --version
 
-RUN set -eux \
-  ; mkdir -p /target \
-  ; tar -C /opt -cf - python | zstd -T0 -19 > /target/python.tar.zst
-
 FROM scratch
-COPY --from=build /target /
+COPY --from=build /opt/python /opt/python
