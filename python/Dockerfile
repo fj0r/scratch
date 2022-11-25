@@ -69,7 +69,7 @@ RUN set -eux; \
 		--with-lto \
 		--with-system-expat \
 		--without-ensurepip \
-		--disable-shared \
+		#--disable-shared \
 		LDFLAGS="-static" \
 		CFLAGS="-static" \
 		CPPFLAGS="-static" \
