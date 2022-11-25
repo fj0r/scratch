@@ -29,6 +29,8 @@ RUN set -eux; \
 COPY --from=bootstrap /opt/python /python
 COPY --from=musl /opt/musl /opt/musl
 ENV PATH /opt/musl/bin:$PATH
+ENV PKG_CONFIG_ALLOW_CROSS=1
+ENV OPENSSL_STATIC=true OPENSSL_DIR=/opt/musl
 RUN set -eux; \
 	savedAptMark="$(apt-mark showmanual)"; \
 	apt-get update; \
@@ -59,6 +61,10 @@ RUN set -eux; \
 	python_url=$(curl -sSL https://www.python.org/downloads/ | rg '<a.+href="(.+xz)">Download Python' -or '$1'); \
 	curl -sSL $python_url | tar -Jxf - -C /usr/src/python --strip-components=1; \
 	CC="/opt/musl/bin/x86_64-linux-musl-gcc -fPIE -pie"; \
+    ln -s /usr/include/x86_64-linux-gnu/asm /opt/musl/include/x86_64-linux-musl/asm; \
+    ln -s /usr/include/asm-generic /opt/musl/include/x86_64-linux-musl/asm-generic; \
+    ln -s /usr/include/linux /opt/musl/include/x86_64-linux-musl/linux; \
+    ln -s /usr/include/x86_64-linux-gnu/ffi.h /opt/musl/x86_64-linux-musl/ffi.h; \
 	\
 	cd /usr/src/python; \
 	gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)"; \
@@ -70,7 +76,6 @@ RUN set -eux; \
 		--build="$gnuArch" \
         --host=x86_64-linux-musl \
         --with-build-python=/python/bin/python3 \
-		--enable-loadable-sqlite-extensions \
 		--enable-optimizations \
 		--enable-option-checking=fatal \
 		--with-lto \
@@ -79,13 +84,12 @@ RUN set -eux; \
 		--without-ensurepip \
 		--disable-shared \
 		--disable-ipv6 \
-		LDFLAGS="-static" \
-		CFLAGS="-static" \
-		CPPFLAGS="-static" \
 	; \
 	nproc="$(nproc)"; \
 	make -j "$nproc" \
-		LDFLAGS="-Wl,--strip-all" \
+		LDFLAGS="-Wl,--strip-all,-static" \
+		CFLAGS="-static" \
+		CPPFLAGS="-static" \
 	; \
 	make install; \
 	\
