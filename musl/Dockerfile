@@ -28,7 +28,7 @@ RUN set -eux \
 
 ENV PKG_CONFIG_ALLOW_CROSS=1
 ENV OPENSSL_STATIC=true
-ENV OPENSSL_DIR=/opt/musl
+ENV OPENSSL_DIR=/musl
 
 RUN set -eux \
   ; mkdir -p /opt/musl/include/x86_64-linux-musl \
