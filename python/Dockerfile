@@ -1,5 +1,4 @@
 FROM fj0rd/scratch:py-test as bootstrap
-FROM fj0rd/scratch:musl as musl
 
 # https://raw.githubusercontent.com/docker-library/python/master/3.11/slim-bullseye/Dockerfile
 FROM debian:bullseye-slim as build
@@ -27,14 +26,12 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*
 
 COPY --from=bootstrap /opt/python /python
-COPY --from=musl / /
 RUN set -eux; \
+	curl -sSL https://musl.cc/x86_64-linux-musl-cross.tgz | tar zxf - -C /usr --strip-components=1; \
 	savedAptMark="$(apt-mark showmanual)"; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
-		binutils-multiarch \
 		dpkg-dev \
-		gcc \
 		gnupg dirmngr \
 		libbluetooth-dev \
 		libbz2-dev \
@@ -48,16 +45,12 @@ RUN set -eux; \
 		libsqlite3-dev \
 		libssl-dev \
 		make \
-		python3 \
 		tk-dev \
 		uuid-dev \
 		wget \
 		xz-utils \
 		zlib1g-dev \
 	; \
-	ln -s /usr/bin/readelf /usr/bin/i386-linux-gnu-readelf; \
-	CC="/opt/musl/bin/musl-gcc -fPIE -pie"; \
-	$CC --version; \
 	\
 	mkdir -p /usr/src/python; \
 	python_url=$(curl -sSL https://www.python.org/downloads/ | rg '<a.+href="(.+xz)">Download Python' -or '$1'); \
@@ -65,10 +58,13 @@ RUN set -eux; \
 	\
 	cd /usr/src/python; \
 	gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)"; \
+	echo 'ac_cv_file__dev_ptmx=no' >> config.site; \
+	echo 'ac_cv_file__dev_ptc=no' >> config.site; \
+	CONFIG_SITE=config.site \
 	./configure \
 	    --prefix=/opt/python \
 		--build="$gnuArch" \
-        --host=x86_64-unknown-linux-musl \
+        --host=x86_64-linux-musl \
         --with-build-python=/python/bin/python3 \
 		--enable-loadable-sqlite-extensions \
 		--enable-optimizations \
@@ -77,9 +73,10 @@ RUN set -eux; \
 		--with-system-expat \
 		--without-ensurepip \
 		--disable-shared \
-		#LDFLAGS="-static" \
-		#CFLAGS="-static" \
-		#CPPFLAGS="-static" \
+		--disable-ipv6 \
+		LDFLAGS="-static" \
+		CFLAGS="-static" \
+		CPPFLAGS="-static" \
 	; \
 	nproc="$(nproc)"; \
 	make -j "$nproc" \
