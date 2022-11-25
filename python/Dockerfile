@@ -27,7 +27,7 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*
 
 COPY --from=bootstrap /opt/python /python
-COPY --from=musl / /
+COPY --from=musl /opt/musl /opt/musl
 ENV PATH /opt/musl/bin:$PATH
 RUN set -eux; \
 	savedAptMark="$(apt-mark showmanual)"; \
@@ -47,7 +47,6 @@ RUN set -eux; \
 		libreadline-dev \
 		libsqlite3-dev \
 		libssl-dev \
-		libssl3-dev \
 		make \
 		tk-dev \
 		uuid-dev \

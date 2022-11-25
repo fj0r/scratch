@@ -27,7 +27,7 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*
 
 COPY --from=bootstrap /opt/python /python
-COPY --from=musl / /
+COPY --from=musl /opt/musl /opt/musl
 ENV PATH /opt/musl/bin:$PATH
 RUN set -eux; \
 	savedAptMark="$(apt-mark showmanual)"; \
