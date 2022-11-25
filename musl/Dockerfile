@@ -30,7 +30,7 @@ RUN set -eux \
 
 ENV PKG_CONFIG_ALLOW_CROSS=1
 ENV OPENSSL_STATIC=true
-ENV OPENSSL_DIR=/musl
+#ENV OPENSSL_DIR=/opt/musl
 
 RUN set -eux \
   ; mkdir -p /opt/musl/include/x86_64-linux-musl \
@@ -44,8 +44,17 @@ RUN set -eux \
   ; openssl_ver=$(curl -sSL https://github.com/openssl/openssl/tags | rg '>(OpenSSL_1.+)</a>' -or '$1' | head -n 1) \
   ; curl -sSL https://github.com/openssl/openssl/archive/${openssl_ver}.tar.gz | tar zxf - -C /opt/openssl-src --strip-components=1 \
   ; cd /opt/openssl-src \
-  ; CC="/opt/musl/bin/musl-gcc -fPIE -pie" ./Configure no-shared no-async --prefix=/opt/musl --openssldir=/opt/musl/ssl linux-x86_64 \
-  ; make depend && make -j$(nproc) && make install
+  ; CC="/opt/musl/bin/musl-gcc -fPIE -pie" \
+    ./Configure \
+        --prefix=/opt/musl \
+        --openssldir=/opt/musl/ssl \
+        no-shared \
+        no-async \
+        no-engine \
+        linux-x86_64 \
+        -DOPENSSL_NO_SECURE_MEMORY \
+  ; make depend && make -j$(nproc) && make install \
+  ; tree
 
 FROM scratch
 COPY --from=build /opt/musl /opt/musl
