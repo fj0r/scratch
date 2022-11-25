@@ -55,3 +55,13 @@ jobs:
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:py
           labels: ${{ steps.meta.outputs.labels }}
 
+      - name: Build python test
+        uses: docker/build-push-action@v2
+        with:
+          context: python
+          file: python/test.Dockerfile
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:py-test
+          labels: ${{ steps.meta.outputs.labels }}
+
+
