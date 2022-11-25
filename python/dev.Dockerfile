@@ -47,7 +47,6 @@ RUN set -eux; \
 		libreadline-dev \
 		libsqlite3-dev \
 		libssl-dev \
-		libssl3-dev \
 		make \
 		tk-dev \
 		uuid-dev \
