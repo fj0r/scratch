@@ -31,10 +31,12 @@ ENV OPENSSL_STATIC=true
 ENV OPENSSL_DIR=/opt/musl
 
 RUN set -eux \
-  ; mkdir -p /opt/openssl-src \
+  ; mkdir -p /opt/musl/include/x86_64-linux-musl \
   ; ln -s /usr/include/x86_64-linux-gnu/asm /opt/musl/include/x86_64-linux-musl/asm \
   ; ln -s /usr/include/asm-generic /opt/musl/include/x86_64-linux-musl/asm-generic \
   ; ln -s /usr/include/linux /opt/musl/include/x86_64-linux-musl/linux \
+  \
+  ; mkdir -p /opt/openssl-src \
   #curl -sSL https://api.github.com/repos/openssl/openssl/git/refs/tags -H 'Accept: application/vnd.github.v3+json' \
   #  | jq '[.[]|select(.name | test("11"))]' \
   ; openssl_ver=$(curl -sSL https://github.com/openssl/openssl/tags | rg '>(OpenSSL_1.+)</a>' -or '$1' | head -n 1) \
