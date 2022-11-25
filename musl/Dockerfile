@@ -52,7 +52,7 @@ RUN set -eux \
         no-async \
         no-engine \
         linux-x86_64 \
-        -DOPENSSL_NO_SECURE_MEMORY \
+        #-DOPENSSL_NO_SECURE_MEMORY \
   ; make depend && make -j$(nproc) && make install \
   ; tree
 
