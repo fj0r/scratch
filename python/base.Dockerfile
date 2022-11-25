@@ -145,5 +145,9 @@ RUN set -eux; \
 	\
 	pip --version
 
+RUN set -eux \
+  ; mkdir -p /target \
+  ; tar -C /opt -cf - python | zstd -T0 -19 > /target/python.tar.zst
+
 FROM scratch
-COPY --from=build /opt/python /opt/python
+COPY --from=build /target /
