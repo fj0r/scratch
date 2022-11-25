@@ -1,3 +1,4 @@
+FROM fj0rd/scratch:py-test as bootstrap
 FROM fj0rd/scratch:musl as musl
 
 # https://raw.githubusercontent.com/docker-library/python/master/3.11/slim-bullseye/Dockerfile
@@ -25,7 +26,7 @@ RUN set -eux; \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
-
+COPY --from=bootstrap /opt/python /python
 COPY --from=musl / /
 RUN set -eux; \
 	savedAptMark="$(apt-mark showmanual)"; \
@@ -46,6 +47,7 @@ RUN set -eux; \
 		libsqlite3-dev \
 		libssl-dev \
 		make \
+		python3 \
 		tk-dev \
 		uuid-dev \
 		wget \
@@ -65,7 +67,7 @@ RUN set -eux; \
 	    --prefix=/opt/python \
 		--build="$gnuArch" \
         --host=x86_64-unknown-linux-musl \
-        --with-build-python=python3.11 \
+        --with-build-python=/python/bin/python3 \
 		--enable-loadable-sqlite-extensions \
 		--enable-optimizations \
 		--enable-option-checking=fatal \
