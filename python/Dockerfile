@@ -1,4 +1,5 @@
 FROM fj0rd/scratch:py-test as bootstrap
+FROM fj0rd/scratch:musl as musl
 
 # https://raw.githubusercontent.com/docker-library/python/master/3.11/slim-bullseye/Dockerfile
 FROM debian:bullseye-slim as build
@@ -26,8 +27,8 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*
 
 COPY --from=bootstrap /opt/python /python
+COPY --from=musl / /
 RUN set -eux; \
-	curl -sSL https://musl.cc/x86_64-linux-musl-cross.tgz | tar zxf - -C /usr --strip-components=1; \
 	savedAptMark="$(apt-mark showmanual)"; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
@@ -55,6 +56,7 @@ RUN set -eux; \
 	mkdir -p /usr/src/python; \
 	python_url=$(curl -sSL https://www.python.org/downloads/ | rg '<a.+href="(.+xz)">Download Python' -or '$1'); \
 	curl -sSL $python_url | tar -Jxf - -C /usr/src/python --strip-components=1; \
+	CC="/opt/musl/bin/x86_64-linux-musl-gcc -fPIE -pie"; \
 	\
 	cd /usr/src/python; \
 	gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)"; \
