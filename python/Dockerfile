@@ -19,12 +19,12 @@ RUN set -eux; \
 		netbase \
 		tzdata \
 		zstd \
+		ripgrep \
 		curl \
 		jq \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
-ENV PYTHON_VERSION 3.11.0
 
 COPY --from=musl / /
 RUN set -eux; \
@@ -56,12 +56,16 @@ RUN set -eux; \
 	$CC --version; \
 	\
 	mkdir -p /usr/src/python; \
-	curl -sSL "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz" | tar -Jxf - -C /usr/src/python --strip-components=1; \
+	python_url=$(curl -sSL https://www.python.org/downloads/ | rg '<a.+href="(.+xz)">Download Python' -or '$1'); \
+	curl -sSL $python_url | tar -Jxf - -C /usr/src/python --strip-components=1; \
 	\
 	cd /usr/src/python; \
+	gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)"; \
 	./configure \
 	    --prefix=/opt/python \
-		#--build="x86_64-linux-musl" \
+		--build="$gnuArch" \
+        --host=x86_64-unknown-linux-musl \
+        --with-build-python=python3.11 \
 		--enable-loadable-sqlite-extensions \
 		--enable-optimizations \
 		--enable-option-checking=fatal \
