@@ -7,7 +7,7 @@ name: py
 
 on:
   push:
-    branches: [ py ]
+    branches: [ main, py ]
 
 env:
   REGISTRY: docker.io
