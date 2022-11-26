@@ -22,7 +22,7 @@ RUN set -eux \
           | grep ${PYTHON_VERSION} \
           | grep x86_64-unknown-linux-musl-install_only) \
   ; curl -sSL ${py_url} | tar zxf - -C /opt/python --strip-components=1 \
-  ; tar -C /opt -cf - python | zstd -T0 -19 > /target/python.tar.zst
+  ; tar -C /opt -cf - python | zstd -T0 -19 > /opt/python.tar.zst
 
 FROM scratch
-COPY --from=build /target /
+COPY --from=build /opt/python.tar.zst /
