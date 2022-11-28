@@ -1,7 +1,7 @@
-FROM scratch:dog as dog
+FROM fj0rd/scratch:dog as dog
 FROM ubuntu:jammy as assets
 
-COPY --from=dog /opt/assets /opt/assets/
+COPY --from=dog /usr/local/bin/dog /opt/assets/
 RUN set -eux \
   ; apt-get update \
   ; apt-get upgrade -y \
