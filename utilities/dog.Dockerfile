@@ -1,5 +1,5 @@
 FROM fj0rd/scratch:openssl1 as openssl
-FROM fj0rd/io:rs as rs
+FROM fj0rd/io:rs as build
 
 ENV PKG_CONFIG_ALLOW_CROSS=1
 ENV OPENSSL_STATIC=true
@@ -17,3 +17,6 @@ RUN set -eux \
   #; mv $(whereis flamegraph | awk '{print $2}') /opt/assets \
   \
   ; find /opt/assets -type f -exec grep -IL . "{}" \; | xargs -L 1 strip -s
+
+FROM scratch
+COPY --from=build /opt/assets /usr/local/bin
