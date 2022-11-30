@@ -3,7 +3,7 @@ FROM alpine:3 as build
 RUN set -eux \
   ; apk add \
         automake autoconf gcc g++ make curl jq git \
-        openssl3-dev zlib-dev zlib-static \
+        openssl-dev zlib-dev zlib-static \
         # libcrypto3 or libssl3 for sftp
   ; mkdir /build /target
 
