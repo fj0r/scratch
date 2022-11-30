@@ -7,7 +7,7 @@ name: nushell
 
 on:
   push:
-    branches: [ main, nu ]
+    branches: [ nu ]
 
 env:
   REGISTRY: docker.io
