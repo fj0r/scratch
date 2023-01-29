@@ -47,11 +47,19 @@ jobs:
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
 
-      - name: Build dog
+      - name: Build openssl
         uses: docker/build-push-action@v3
         with:
           context: utilities
-          file: utilities/dog.Dockerfile
+          file: utilities/openssl1.Dockerfile
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:openssl1
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Build dog
+        uses: docker/build-push-action@v3
+        with:
+          context: dog
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:dog
           labels: ${{ steps.meta.outputs.labels }}
