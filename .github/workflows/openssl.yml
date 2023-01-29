@@ -50,8 +50,7 @@ jobs:
       - name: Build openssl
         uses: docker/build-push-action@v3
         with:
-          context: utilities
-          file: utilities/openssl1.Dockerfile
+          context: openssl1
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:openssl1
           labels: ${{ steps.meta.outputs.labels }}
