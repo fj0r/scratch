@@ -11,13 +11,13 @@ RUN set -eux \
   \
   ; mkdir /dist \
   ; mkdir zstd \
-  ; zstd_ver=$(curl -sSL https://api.github.com/repos/facebook/zstd/releases/latest | jq -r '.tag_name')
-  ; curl -sSL https://github.com/facebook/zstd/releases/download/v1.5.4/zstd-1.5.4.tar.gz \
-    | tar -zxf - -C zstd --strip-components=1 \
+  ; zstd_ver=$(curl -sSL https://api.github.com/repos/facebook/zstd/releases/latest | jq -r '.tag_name' | cut -c 2-) \
+  ; curl -sSL https://github.com/facebook/zstd/releases/latest/download/zstd-${zstd_ver}.tar.gz \
+        | tar -zxf - -C zstd --strip-components=1 \
   ; cd zstd \
   ; CC="musl-gcc -static" make \
   ; cp programs/zstd /dist \
   ;
 
 FROM scratch
-COPY --from=build /dist/zstd /usr/local/bin
+COPY --from=build /dist/zstd /usr/local/bin/zstd
