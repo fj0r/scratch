@@ -1,5 +1,4 @@
 FROM fj0rd/io:base as assets
-ARG url=https://github.com/neovim/neovim.git
 WORKDIR /root
 
 RUN set -eux \
@@ -7,12 +6,16 @@ RUN set -eux \
   ; apt-get upgrade -y \
   ; DEBIAN_FRONTEND=noninteractive \
   ; apt-get install -y --no-install-recommends \
+        git build-essential \
         musl musl-dev musl-tools \
         ninja-build gettext libtool libtool-bin \
         autoconf automake cmake g++ pkg-config \
         unzip curl doxygen \
   \
-  ; git clone ${url} \
+  ; mkdir neovim \
+  #; curl -sSL https://github.com/neovim/neovim/archive/refs/tags/stable.tar.gz \
+  ; curl -sSL https://github.com/neovim/neovim/archive/refs/tags/v0.8.3.tar.gz \
+    | tar -zxf - -C neovim --strip-components=1 \
   ; cd neovim \
   ; CC="musl-gcc -static" make \
   ; tree /root/neovim/build \
