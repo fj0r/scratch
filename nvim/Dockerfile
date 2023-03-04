@@ -7,19 +7,25 @@ RUN set -eux \
   ; DEBIAN_FRONTEND=noninteractive \
   ; apt-get install -y --no-install-recommends \
         git build-essential \
+        ninja-build gettext libtool-bin cmake g++ pkg-config unzip curl \
         musl musl-dev musl-tools \
-        ninja-build gettext libtool libtool-bin \
-        autoconf automake cmake g++ pkg-config \
-        unzip curl doxygen \
+        libuv1-dev libmsgpack-dev \
   \
   ; mkdir neovim \
-  #; curl -sSL https://github.com/neovim/neovim/archive/refs/tags/stable.tar.gz \
-  ; curl -sSL https://github.com/neovim/neovim/archive/refs/tags/v0.8.3.tar.gz \
+  #; curl -sSL https://github.com/neovim/neovim/archive/refs/tags/v0.8.3.tar.gz \
+  ; curl -sSL https://github.com/neovim/neovim/archive/refs/tags/stable.tar.gz \
     | tar -zxf - -C neovim --strip-components=1 \
   ; cd neovim \
-  ; CC="musl-gcc -static" make \
-  ; tree /root/neovim/build \
+  ; CC="musl-gcc -static" make CMAKE_INSTALL_PREFIX=/opt/nvim CMAKE_BUILD_TYPE=Release \
+  ; make install \
   ;
 
 FROM scratch
-COPY --from=assets /root/neovim/build /usr/local
+COPY --from=assets /opt/nvim /opt/nvim
+
+# mkdir build
+# cd build
+# cmake .. -G Ninja
+# CC="musl-gcc -static" cmake --build .
+# cd ..
+# CC="musl-gcc -static" make CMAKE_INSTALL_PREFIX=/opt/nvim CMAKE_BUILD_TYPE=Release
