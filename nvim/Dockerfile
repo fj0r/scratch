@@ -9,7 +9,7 @@ RUN set -eux \
         git build-essential \
         ninja-build gettext libtool-bin cmake g++ pkg-config unzip curl \
         musl musl-dev musl-tools \
-        libuv1-dev libmsgpack-dev \
+        libuv1-dev libmsgpack-dev libvterm-dev \
   \
   ; mkdir neovim \
   #; curl -sSL https://github.com/neovim/neovim/archive/refs/tags/v0.8.3.tar.gz \
