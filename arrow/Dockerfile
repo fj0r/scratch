@@ -1,4 +1,4 @@
-FROM ubuntu:jammy as assets
+FROM debian:testing-slim as assets
 
 RUN set -eux \
   ; apt-get update \

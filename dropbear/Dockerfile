@@ -1,4 +1,4 @@
-FROM ubuntu:jammy as build
+FROM debian:testing-slim as build
 
 RUN set -eux \
   ; apt-get update \

@@ -1,5 +1,5 @@
 FROM scratch:dog as dog
-FROM ubuntu:jammy as assets
+FROM debian:testing-slim as assets
 
 COPY --from=dog /opt/assets /opt/assets/
 RUN set -eux \

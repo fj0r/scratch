@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim as build
+FROM debian:testing-slim as build
 
 RUN set -eux; \
 	apt-get update; \
@@ -59,5 +59,5 @@ RUN set -eux \
   ; make depend && make -j$(nproc) && make install \
   ; tree
 
-FROM ubuntu
+FROM debian:testing-slim
 COPY --from=build /opt/musl /opt/musl

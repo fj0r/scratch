@@ -1,5 +1,5 @@
 FROM fj0rd/scratch:py as py
-FROM ubuntu as tar
+FROM debian:testing-slim as tar
 COPY --from=py /python.tar.zst /
 RUN set -eux \
   ; apt-get update \
@@ -7,7 +7,7 @@ RUN set -eux \
   ; mkdir -p /opt/python \
   ; cat /python.tar.zst | zstd -d -T0 | tar -xf - -C /opt/python --strip-components=1
 
-FROM ubuntu
+FROM debian:testing-slim
 RUN set -eux \
   ; apt-get update \
   ; apt-get install -y --no-install-recommends zstd curl \
