@@ -20,8 +20,7 @@ RUN set -eux \
     | tar zxf - -C arrow --strip-components=1 \
   #; git clone --depth=1 https://github.com/apache/arrow.git \
   ; cd arrow \
-  ; tar -cf libarrow-dev.tar -C cpp/src/arrow $(find cpp/src/arrow -name '*.h' | cut -c 15-) \
-    | tar -xf - -C /target/h \
+  ; tar -cf - -C cpp/src/arrow $(find cpp/src/arrow -name '*.h' | cut -c 15-) | tar -xf - -C /target/h \
   \
   ; cd cpp \
   ; mkdir build \
