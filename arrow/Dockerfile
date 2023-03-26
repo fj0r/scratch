@@ -13,16 +13,15 @@ RUN set -eux \
   ;
 
 
+ENV SRC=/opt/src/arrow
 RUN set -eux \
-  ; mkdir arrow \
+  ; mkdir -p $SRC \
   ; version=$(curl -sSL https://arrow.apache.org/install/ | rg 'Current Version: ([.0-9]+)' -or '$1') \
   ; curl -sSL https://dlcdn.apache.org/arrow/arrow-${version}/apache-arrow-${version}.tar.gz \
-    | tar zxf - -C arrow --strip-components=1 \
+    | tar zxf - -C $SRC --strip-components=1 \
   #; git clone --depth=1 https://github.com/apache/arrow.git \
-  ; cd arrow \
-  ; tar -cf - -C cpp/src/arrow $(find cpp/src/arrow -name '*.h' | cut -c 15-) | tar -xf - -C /target/h \
   \
-  ; cd cpp \
+  ; cd $SRC/cpp \
   ; mkdir build \
   ; cd build \
   ; cmake .. --preset ninja-release \
@@ -31,6 +30,9 @@ RUN set -eux \
   ; cmake --build . \
   ; mv release/* /target/lib \
   ; tree /target/lib \
+  \
+  ; cd $SRC/cpp/src/arrow \
+  ; tar -cf - $(find . -name '*.h') | tar -xf - -C /target/h \
   ;
 
 FROM scratch
