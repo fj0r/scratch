@@ -31,5 +31,5 @@ RUN set -eux \
 
 FROM scratch
 
-COPY --from=assets /target /usr/local
+COPY --from=assets /target /usr/lib/x86_64-linux-gnu
 
