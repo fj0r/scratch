@@ -8,7 +8,8 @@ RUN set -eux \
         curl ca-certificates ripgrep tree \
         git build-essential cmake ninja-build \
         libcurl4-openssl-dev libssl-dev \
-  ; mkdir -p /target \
+  ; mkdir -p /target/lib \
+  ; mkdir -p /target/h \
   ;
 
 
@@ -18,18 +19,23 @@ RUN set -eux \
   ; curl -sSL https://dlcdn.apache.org/arrow/arrow-${version}/apache-arrow-${version}.tar.gz \
     | tar zxf - -C arrow --strip-components=1 \
   #; git clone --depth=1 https://github.com/apache/arrow.git \
-  ; cd arrow/cpp \
+  ; cd arrow \
+  ; tar -cf libarrow-dev.tar -C cpp/src/arrow $(find cpp/src/arrow -name '*.h' | cut -c 15-) \
+    | tar -xf -C /target/h \
+  \
+  ; cd cpp \
   ; mkdir build \
   ; cd build \
   ; cmake .. --preset ninja-release \
         -DARROW_PARQUET=ON \
         -DARROW_S3=ON \
   ; cmake --build . \
-  ; mv release/* /target \
-  ; tree /target \
+  ; mv release/* /target/lib \
+  ; tree /target/lib \
   ;
 
 FROM scratch
 
-COPY --from=assets /target /usr/lib/x86_64-linux-gnu
+COPY --from=assets /target/h /usr/include/arrow
+COPY --from=assets /target/lib /usr/lib/x86_64-linux-gnu
 
