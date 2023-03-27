@@ -56,3 +56,9 @@ jobs:
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:arrow
           labels: ${{ steps.meta.outputs.labels }}
 
+      - name: trigger pg-parquet
+        run: |
+          curl -L -X POST https://api.github.com/repos/fj0r/io/actions/workflows/pg-paq.yml/dispatches \
+            -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
+            -H "Authorization: Bearer ${{ secrets.ACTIONS_KEY }}" \
+            -d '{"ref":"main","inputs":{}}'
