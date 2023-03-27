@@ -7,7 +7,7 @@ name: arrow
 
 on:
   push:
-    branches: [ main, arrow ]
+    branches: [ arrow ]
 
 env:
   REGISTRY: docker.io
