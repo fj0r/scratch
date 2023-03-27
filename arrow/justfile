@@ -9,11 +9,12 @@ tar:
 
     cd $o/assets/temp
     tar -xf $(cat $o/assets/temp/manifest.json | jq -r '.[0].Layers[0]') -C $o/assets/dist --strip-components=2
+    tar -xf $(cat $o/assets/temp/manifest.json | jq -r '.[0].Layers[1]') -C $o/assets/dist --strip-components=2
     cd $o/assets/dist
     tar zcvf $o/assets/libarrow-dev.tar.gz *
 
     cd $o/assets/temp
-    tar -xf $(cat $o/assets/temp/manifest.json | jq -r '.[0].Layers[1]') -C $o/assets/lib --strip-components=2
+    tar -xf $(cat $o/assets/temp/manifest.json | jq -r '.[0].Layers[2]') -C $o/assets/lib --strip-components=2
     cd $o/assets/lib
     tar zcvf $o/assets/libarrow.tar.gz *
 
