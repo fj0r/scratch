@@ -30,6 +30,7 @@ RUN set -eux \
   #; git clone --depth=1 https://github.com/apache/arrow.git \
   \
   ; cd $SRC/cpp \
+  ; tree \
   ; mkdir build \
   ; cd build \
   ; cmake .. --preset ninja-release \
