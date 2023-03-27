@@ -25,8 +25,12 @@ RUN set -eux \
   ; mkdir build \
   ; cd build \
   ; cmake .. --preset ninja-release \
+        -DARROW_JSON=ON \
         -DARROW_PARQUET=ON \
         -DARROW_S3=ON \
+        -DARROW_WITH_UTF8PROC=ON \
+        -DARROW_WITH_ZLIB=ON \
+        -DARROW_WITH_ZSTD=ON \
   ; cmake --build . \
   ; mv release/* /target/lib \
   ; tree /target/lib \
