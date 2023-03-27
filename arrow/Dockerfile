@@ -5,7 +5,7 @@ RUN set -eux \
   ; apt-get upgrade -y \
   ; DEBIAN_FRONTEND=noninteractive \
     apt-get install -y --no-install-recommends \
-        curl ca-certificates ripgrep tree \
+        curl ca-certificates jq ripgrep tree \
         git build-essential cmake ninja-build \
         libcurl4-openssl-dev libssl-dev \
   ; mkdir -p /target/lib \
@@ -25,6 +25,11 @@ RUN set -eux \
   ; mkdir build \
   ; cd build \
   ; cmake .. --preset ninja-release \
+        -DARROW_BUILD_INTEGRATION=OFF \
+        -DARROW_BUILD_STATIC=OFF \
+        -DARROW_BUILD_TESTS=OFF \
+        -DARROW_EXTRA_ERROR_CONTEXT=ON \
+        -DARROW_WITH_RE2=OFF \
         -DARROW_JSON=ON \
         -DARROW_PARQUET=ON \
         -DARROW_S3=ON \
@@ -37,6 +42,8 @@ RUN set -eux \
   \
   ; cd $SRC/cpp/src/arrow \
   ; tar -cf - $(find . -name '*.h') | tar -xf - -C /target/h \
+  ; cp $SRC/cpp/build/src/arrow/util/config.h /target/h/util/config.h \
+  ; tree /target/h \
   ;
 
 FROM scratch
