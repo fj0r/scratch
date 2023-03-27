@@ -9,7 +9,8 @@ RUN set -eux \
         git build-essential cmake ninja-build \
         libcurl4-openssl-dev libssl-dev \
   ; mkdir -p /target/lib \
-  ; mkdir -p /target/h \
+  ; mkdir -p /target/h/arrow \
+  ; mkdir -p /target/h/parquet \
   ;
 
 
@@ -41,13 +42,15 @@ RUN set -eux \
   ; tree /target/lib \
   \
   ; cd $SRC/cpp/src/arrow \
-  ; tar -cf - $(find . -name '*.h') | tar -xf - -C /target/h \
-  ; cp $SRC/cpp/build/src/arrow/util/config.h /target/h/util/config.h \
-  ; tree /target/h \
+  ; tar -cf - $(find . -name '*.h') | tar -xf - -C /target/h/arrow \
+  ; cp $SRC/cpp/build/src/arrow/util/config.h /target/h/arrow/util/config.h \
+  \
+  ; cd $SRC/cpp/src/parquet \
+  ; tar -cf - $(find . -name '*.h') | tar -xf - -C /target/h/parquet \
   ;
 
 FROM scratch
 
-COPY --from=assets /target/h /usr/include/arrow
+COPY --from=assets /target/h /usr/include
 COPY --from=assets /target/lib /usr/lib/x86_64-linux-gnu
 

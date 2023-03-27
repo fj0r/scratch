@@ -6,7 +6,7 @@ tar:
     mkdir -p $o/assets/dist
     podman save fj0rd/scratch:arrow | tar -xf - -C $o/assets/temp
     cd $o/assets/temp
-    tar -xf $(cat $o/assets/temp/manifest.json | jq -r '.[0].Layers[0]') -C $o/assets/dist --strip-components=3
+    tar -xf $(cat $o/assets/temp/manifest.json | jq -r '.[0].Layers[0]') -C $o/assets/dist --strip-components=2
     cd $o/assets/dist
     tar zcvf $o/assets/libarrow-dev.tar.gz *
     rm -rf $o/assets/temp
