@@ -6,7 +6,7 @@ RUN set -eux \
   ; DEBIAN_FRONTEND=noninteractive \
     apt-get install -y --no-install-recommends \
         curl ca-certificates jq ripgrep tree \
-        git build-essential cmake ninja-build \
+        git build-essential ninja-build \
         libcurl4-openssl-dev libssl-dev \
   ; mkdir -p /target/lib \
   ; mkdir -p /target/a \
@@ -15,6 +15,12 @@ RUN set -eux \
   ;
 
 
+ENV PATH=/opt/cmake/bin:$PATH
+RUN set -eux \
+  ; mkdir /opt/cmake \
+  ; curl -sSL https://github.com/Kitware/CMake/releases/download/v3.26.1/cmake-3.26.1-linux-x86_64.tar.gz \
+    | tar -zxf - -C /opt/cmake --strip-components=1 \
+  ;
 ENV SRC=/opt/src/arrow
 RUN set -eux \
   ; mkdir -p $SRC \
