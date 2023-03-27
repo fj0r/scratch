@@ -1,4 +1,4 @@
-FROM debian:testing-slim as assets
+FROM debian:bullseye-slim as assets
 
 RUN set -eux \
   ; apt-get update \
