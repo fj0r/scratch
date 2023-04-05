@@ -8,6 +8,7 @@ name: dropbear
 on:
   push:
     branches: [ main, dropbear ]
+  workflow_dispatch:
 
 env:
   REGISTRY: docker.io

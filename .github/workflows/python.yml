@@ -8,6 +8,7 @@ name: py
 on:
   push:
     branches: [ py ]
+  workflow_dispatch:
 
 env:
   REGISTRY: docker.io

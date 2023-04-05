@@ -8,6 +8,7 @@ name: arrow
 on:
   push:
     branches: [ arrow ]
+  workflow_dispatch:
 
 env:
   REGISTRY: docker.io

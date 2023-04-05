@@ -8,6 +8,7 @@ name: musl
 on:
   push:
     branches: [ musl ]
+  workflow_dispatch:
 
 env:
   REGISTRY: docker.io

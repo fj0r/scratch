@@ -8,6 +8,7 @@ name: boringtun
 on:
   push:
     branches: [ main, boringtun ]
+  workflow_dispatch:
 
 env:
   REGISTRY: docker.io

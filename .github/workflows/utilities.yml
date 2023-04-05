@@ -8,6 +8,7 @@ name: utilities
 on:
   push:
     branches: [ utilities ]
+  workflow_dispatch:
 
 env:
   REGISTRY: docker.io

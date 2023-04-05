@@ -8,6 +8,7 @@ name: dog
 on:
   push:
     branches: [ main, dog ]
+  workflow_dispatch:
 
 env:
   REGISTRY: docker.io
