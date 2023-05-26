@@ -1,5 +1,5 @@
 FROM fj0rd/scratch:dog as dog
-FROM debian:testing-slim as assets
+FROM ubuntu:latest as assets
 
 COPY --from=dog /usr/local/bin/dog /opt/assets/
 RUN set -eux \

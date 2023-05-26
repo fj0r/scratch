@@ -1,4 +1,4 @@
-FROM debian:testing-slim as build
+FROM ubuntu:latest as build
 
 RUN set -eux \
   ; apt-get update \

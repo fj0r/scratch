@@ -1,4 +1,4 @@
-FROM debian:testing-slim as build
+FROM ubuntu:latest as build
 
 RUN set -eux; \
 	apt-get update; \
@@ -59,5 +59,5 @@ RUN set -eux \
   ; make depend && make -j$(nproc) && make install \
   ; tree
 
-FROM debian:testing-slim
+FROM ubuntu:latest
 COPY --from=build /opt/musl /opt/musl
