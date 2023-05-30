@@ -68,7 +68,7 @@ jobs:
 
       - name: trigger io:base
         run: |
-          for a in base stable; do
+          for a in base; do
             curl -L -X POST https://api.github.com/repos/fj0r/io/actions/workflows/${a}.yml/dispatches \
               -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
               -H "Authorization: Bearer ${{ secrets.ACTIONS_KEY }}" \
