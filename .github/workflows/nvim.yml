@@ -51,6 +51,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: nvim
+          file: nvim/alpine.Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:nvim
           labels: ${{ steps.meta.outputs.labels }}
