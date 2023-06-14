@@ -1,4 +1,4 @@
-FROM fj0rd/io:rs as rs
+FROM rust as rs
 
 ENV PKG_CONFIG_ALLOW_CROSS=1
 ENV OPENSSL_STATIC=true
