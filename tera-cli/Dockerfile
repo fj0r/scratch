@@ -1,6 +1,7 @@
-FROM rust
+FROM rust as builder
 
 RUN set -eux \
+  ; rustup target add x86_64-unknown-linux-musl \
   ; mkdir -p /target \
   ; cargo install \
     --git https://github.com/chevdor/tera-cli \
