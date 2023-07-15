@@ -12,8 +12,8 @@ RUN set -eux \
         libuv1-dev libmsgpack-dev libvterm-dev \
   \
   ; mkdir neovim \
-  #; curl -sSL https://github.com/neovim/neovim/archive/refs/tags/v0.8.3.tar.gz \
-  ; curl -sSL https://github.com/neovim/neovim/archive/refs/tags/stable.tar.gz \
+  #; curl --retry 3 -sSL https://github.com/neovim/neovim/archive/refs/tags/v0.8.3.tar.gz \
+  ; curl --retry 3 -sSL https://github.com/neovim/neovim/archive/refs/tags/stable.tar.gz \
     | tar -zxf - -C neovim --strip-components=1 \
   ; cd neovim \
   ; CC="musl-gcc -static" make CMAKE_INSTALL_PREFIX=/opt/nvim CMAKE_BUILD_TYPE=Release \

@@ -3,9 +3,9 @@ FROM fj0rd/io as assets
 RUN set -eux \
   ; mkdir -p /target \
   \
-  ; goofys_url=$(curl -sSL https://api.github.com/repos/kahing/goofys/releases -H 'Accept: application/vnd.github.v3+json' \
+  ; goofys_url=$(curl --retry 3 -sSL https://api.github.com/repos/kahing/goofys/releases -H 'Accept: application/vnd.github.v3+json' \
              | jq -r '[.[]|select(.prerelease == false)][0].assets[].browser_download_url') \
-  ; curl -sSLo /target/goofys ${goofys_url} \
+  ; curl --retry 3 -sSLo /target/goofys ${goofys_url} \
   ; chmod +x /target/goofys \
   ; strip -s /target/goofys
 

@@ -18,14 +18,14 @@ RUN set -eux \
 ENV PATH=/opt/cmake/bin:$PATH
 RUN set -eux \
   ; mkdir /opt/cmake \
-  ; curl -sSL https://github.com/Kitware/CMake/releases/download/v3.26.1/cmake-3.26.1-linux-x86_64.tar.gz \
+  ; curl --retry 3 -sSL https://github.com/Kitware/CMake/releases/download/v3.26.1/cmake-3.26.1-linux-x86_64.tar.gz \
     | tar -zxf - -C /opt/cmake --strip-components=1 \
   ;
 ENV SRC=/opt/src/arrow
 RUN set -eux \
   ; mkdir -p $SRC \
-  ; version=$(curl -sSL https://arrow.apache.org/install/ | rg 'Current Version: ([.0-9]+)' -or '$1') \
-  ; curl -sSL https://dlcdn.apache.org/arrow/arrow-${version}/apache-arrow-${version}.tar.gz \
+  ; version=$(curl --retry 3 -sSL https://arrow.apache.org/install/ | rg 'Current Version: ([.0-9]+)' -or '$1') \
+  ; curl --retry 3 -sSL https://dlcdn.apache.org/arrow/arrow-${version}/apache-arrow-${version}.tar.gz \
     | tar zxf - -C $SRC --strip-components=1 \
   #; git clone --depth=1 https://github.com/apache/arrow.git \
   \

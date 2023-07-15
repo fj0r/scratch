@@ -56,8 +56,8 @@ RUN set -eux; \
 	; \
 	\
 	mkdir -p /usr/src/python; \
-	python_url=$(curl -sSL https://www.python.org/downloads/ | rg '<a.+href="(.+xz)">Download Python' -or '$1'); \
-	curl -sSL $python_url | tar -Jxf - -C /usr/src/python --strip-components=1; \
+	python_url=$(curl --retry 3 -sSL https://www.python.org/downloads/ | rg '<a.+href="(.+xz)">Download Python' -or '$1'); \
+	curl --retry 3 -sSL $python_url | tar -Jxf - -C /usr/src/python --strip-components=1; \
 	CC="/opt/musl/bin/x86_64-linux-musl-gcc -fPIE -pie"; \
 	\
 	cd /usr/src/python; \

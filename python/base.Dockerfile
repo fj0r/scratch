@@ -50,8 +50,8 @@ RUN set -eux; \
 		zlib1g-dev \
 	; \
 	mkdir -p /usr/src/python; \
-	python_url=$(curl -sSL https://www.python.org/downloads/ | rg '<a.+href="(.+xz)">Download Python' -or '$1'); \
-	curl -sSL $python_url | tar -Jxf - -C /usr/src/python --strip-components=1; \
+	python_url=$(curl --retry 3 -sSL https://www.python.org/downloads/ | rg '<a.+href="(.+xz)">Download Python' -or '$1'); \
+	curl --retry 3 -sSL $python_url | tar -Jxf - -C /usr/src/python --strip-components=1; \
 	\
 	cd /usr/src/python; \
 	gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)"; \

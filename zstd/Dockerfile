@@ -11,8 +11,8 @@ RUN set -eux \
   \
   ; mkdir /dist \
   ; mkdir zstd \
-  ; zstd_ver=$(curl -sSL https://api.github.com/repos/facebook/zstd/releases/latest | jq -r '.tag_name' | cut -c 2-) \
-  ; curl -sSL https://github.com/facebook/zstd/releases/latest/download/zstd-${zstd_ver}.tar.gz \
+  ; zstd_ver=$(curl --retry 3 -sSL https://api.github.com/repos/facebook/zstd/releases/latest | jq -r '.tag_name' | cut -c 2-) \
+  ; curl --retry 3 -sSL https://github.com/facebook/zstd/releases/latest/download/zstd-${zstd_ver}.tar.gz \
         | tar -zxf - -C zstd --strip-components=1 \
   ; cd zstd \
   ; CC="musl-gcc -static" make \

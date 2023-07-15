@@ -11,9 +11,9 @@ WORKDIR /build
 
 RUN set -eux \
   ; mkdir dropbear \
-  #; curl -sSL https://matt.ucc.asn.au/dropbear/dropbear-2020.81.tar.bz2 \
-  ; dropbear_url=$(curl -sSL https://api.github.com/repos/mkj/dropbear/releases -H 'Accept: application/vnd.github.v3+json' | jq -r '.[0].tarball_url') \
-  ; curl -sSL ${dropbear_url} | tar zxf - -C dropbear --strip-components=1 \
+  #; curl --retry 3 -sSL https://matt.ucc.asn.au/dropbear/dropbear-2020.81.tar.bz2 \
+  ; dropbear_url=$(curl --retry 3 -sSL https://api.github.com/repos/mkj/dropbear/releases -H 'Accept: application/vnd.github.v3+json' | jq -r '.[0].tarball_url') \
+  ; curl --retry 3 -sSL ${dropbear_url} | tar zxf - -C dropbear --strip-components=1 \
   ; cd dropbear \
   ; autoconf && autoheader && ./configure --enable-static \
   # dropbearkey dropbearconvert

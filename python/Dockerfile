@@ -16,12 +16,12 @@ RUN set -eux; \
 ARG PYTHON_VERSION=3.10
 RUN set -eux \
   ; mkdir -p /opt/python \
-  ; py_url=$(curl -sSL https://api.github.com/repos/indygreg/python-build-standalone/releases -H 'Accept: application/vnd.github.v3+json' \
+  ; py_url=$(curl --retry 3 -sSL https://api.github.com/repos/indygreg/python-build-standalone/releases -H 'Accept: application/vnd.github.v3+json' \
           | jq -r '[.[]|select(.prerelease == false)][0].assets[].browser_download_url' \
           | grep -v sha256 \
           | grep ${PYTHON_VERSION} \
           | grep x86_64-unknown-linux-musl-install_only) \
-  ; curl -sSL ${py_url} | tar zxf - -C /opt/python --strip-components=1 \
+  ; curl --retry 3 -sSL ${py_url} | tar zxf - -C /opt/python --strip-components=1 \
   ; tar -C /opt -cf - python | zstd -T0 -19 > /opt/python.tar.zst
 
 FROM scratch
