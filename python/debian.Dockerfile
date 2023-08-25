@@ -1,5 +1,5 @@
-ARG BASEIMAGE=ubuntu:latest
-FROM debian:bookworm-slim
+ARG BASEIMAGE=debian:bookworm-slim
+FROM ${BASEIMAGE}
 RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \

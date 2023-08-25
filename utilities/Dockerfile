@@ -1,5 +1,5 @@
 FROM scratch:dog as dog
-FROM ubuntu:latest as assets
+FROM debian:bookworm-slim as assets
 
 COPY --from=dog /opt/assets /opt/assets/
 RUN set -eux \

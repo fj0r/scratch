@@ -1,4 +1,4 @@
-FROM ubuntu:latest as build
+FROM debian:bookworm-slim as build
 
 RUN set -eux \
   ; apt update \

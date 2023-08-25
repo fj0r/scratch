@@ -1,4 +1,4 @@
-FROM ubuntu:latest as build
+FROM debian:bookworm-slim as build
 
 RUN set -eux; \
 	apt-get update; \
@@ -59,5 +59,5 @@ RUN set -eux \
   ; make depend && make -j$(nproc) && make install \
   ; tree
 
-FROM ubuntu:latest
+FROM debian:bookworm-slim
 COPY --from=build /opt/musl /opt/musl
