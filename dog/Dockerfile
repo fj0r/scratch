@@ -1,11 +1,11 @@
-FROM fj0rd/scratch:openssl1 as openssl
+FROM fj0rd/scratch:musl as musl
 FROM fj0rd/io:rs as build
 
 ENV PKG_CONFIG_ALLOW_CROSS=1
 ENV OPENSSL_STATIC=true
 ENV OPENSSL_DIR=/musl
 
-COPY --from=openssl / /
+COPY --from=musl /opt/openssl /musl
 RUN set -eux \
   ; mkdir -p /opt/assets \
   ; git clone https://github.com/ogham/dog.git \
