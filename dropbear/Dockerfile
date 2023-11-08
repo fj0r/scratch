@@ -20,8 +20,7 @@ RUN set -eux \
   ; autoconf && autoheader && ./configure --enable-static \
   ; make PROGRAMS="dropbear dbclient scp dropbearkey dropbearconvert" \
   ; mkdir -p /target/bin \
-  ; mv dbclient /target/bin/ssh \
-  ; mv dropbear scp dropbearkey dropbearconvert /target/bin
+  ; mv dbclient dropbear scp dropbearkey dropbearconvert /target/bin
 
 RUN set -eux \
   ; git clone --depth=1 https://github.com/openssh/openssh-portable.git \
