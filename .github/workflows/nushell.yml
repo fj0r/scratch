@@ -7,7 +7,7 @@ name: nushell
 
 on:
   push:
-    branches: [ nu ]
+    branches: [ main, nushell, nu ]
 
 env:
   REGISTRY: docker.io
@@ -53,6 +53,6 @@ jobs:
           context: nushell
           file: nushell/Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:nu
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:nushell
           labels: ${{ steps.meta.outputs.labels }}
 
