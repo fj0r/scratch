@@ -18,8 +18,8 @@ ENV XDG_CONFIG_HOME=/etc \
         binutils \
     "
 
-COPY --from=dropbear / /
-COPY --from=tera / /
+COPY --link --from=dropbear / /
+COPY --link --from=tera / /
 
 RUN set -eux \
   ; apt-get update \
