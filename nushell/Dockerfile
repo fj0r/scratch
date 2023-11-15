@@ -26,7 +26,7 @@ RUN set -eux \
   ; apt-get upgrade -y \
   ; DEBIAN_FRONTEND=noninteractive \
     apt-get install -y --no-install-recommends \
-      sudo sqlite3 curl ca-certificates ${BUILD_DEPS} \
+      sudo curl ca-certificates ${BUILD_DEPS} \
   ; ln -sf /usr/share/zoneinfo/$TIMEZONE /etc/localtime \
   ; echo "$TIMEZONE" > /etc/timezone \
   #; sed -i /etc/locale.gen \
