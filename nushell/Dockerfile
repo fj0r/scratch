@@ -8,15 +8,16 @@ EXPOSE 22
 VOLUME /world
 WORKDIR /world
 
-ENV XDG_CONFIG_HOME=/etc \
-    LANG=C.UTF-8 \
-    LC_ALL=C.UTF-8 \
-    TIMEZONE=Asia/Shanghai \
-    BUILD_DEPS="\
+ARG BUILD_DEPS="\
         jq \
         git \
         binutils \
-    "
+        "
+
+ENV XDG_CONFIG_HOME=/etc \
+    LANG=C.UTF-8 \
+    LC_ALL=C.UTF-8 \
+    TIMEZONE=Asia/Shanghai
 
 COPY --link --from=dropbear / /
 COPY --link --from=tera / /
