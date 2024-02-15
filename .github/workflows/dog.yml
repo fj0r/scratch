@@ -7,7 +7,7 @@ name: dog
 
 on:
   push:
-    branches: [ main, dog ]
+    branches: [ dog ]
   workflow_dispatch:
 
 env:
