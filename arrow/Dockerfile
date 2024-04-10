@@ -1,38 +1,49 @@
-FROM debian:bullseye-slim as assets
+FROM debian:bookworm-slim as assets
 
+ENV SRC=/tmp/build
 RUN set -eux \
   ; apt-get update \
   ; apt-get upgrade -y \
   ; DEBIAN_FRONTEND=noninteractive \
     apt-get install -y --no-install-recommends \
         curl ca-certificates jq ripgrep tree \
-        git build-essential ninja-build \
-        libcurl4-openssl-dev libssl-dev \
-  ; mkdir -p /target/lib \
-  ; mkdir -p /target/a \
-  ; mkdir -p /target/h/arrow \
-  ; mkdir -p /target/h/parquet \
-  ;
-
-
-ENV PATH=/opt/cmake/bin:$PATH
-RUN set -eux \
-  ; mkdir /opt/cmake \
-  ; curl --retry 3 -sSL https://github.com/Kitware/CMake/releases/download/v3.26.1/cmake-3.26.1-linux-x86_64.tar.gz \
-    | tar -zxf - -C /opt/cmake --strip-components=1 \
-  ;
-ENV SRC=/opt/src/arrow
-RUN set -eux \
-  ; mkdir -p $SRC \
-  ; version=$(curl --retry 3 -sSL https://arrow.apache.org/install/ | rg 'Current Version: ([.0-9]+)' -or '$1') \
-  ; curl --retry 3 -sSL https://dlcdn.apache.org/arrow/arrow-${version}/apache-arrow-${version}.tar.gz \
-    | tar zxf - -C $SRC --strip-components=1 \
-  #; git clone --depth=1 https://github.com/apache/arrow.git \
+        git build-essential ninja-build cmake \
+        libcurl4-openssl-dev libssl-dev uuid-dev zlib1g-dev libpulse-dev \
   \
-  ; cd $SRC/cpp \
-  ; tree \
+  ; nu_ver=$(curl --retry 3 -sSL https://api.github.com/repos/nushell/nushell/releases/latest | jq -r '.tag_name') \
+  ; nu_url="https://github.com/nushell/nushell/releases/download/${nu_ver}/nu-${nu_ver}-x86_64-unknown-linux-musl.tar.gz" \
+  ; curl --retry 3 -sSL ${nu_url} | tar zxf - -C /usr/local/bin --strip-components=1 --wildcards '*/nu' '*/nu_plugin_query' \
+  \
+  ; mkdir -p $SRC \
+  ; mkdir -p /target/lib \
+  ; mkdir -p /target/include \
+  ;
+
+
+RUN set -eux \
+  ; cd $SRC \
+  ; git clone --recurse-submodules https://github.com/aws/aws-sdk-cpp \
+  ; cd aws-sdk-cpp \
+  ; mkdir sdk_build \
+  ; cd sdk_build \
+  ; cmake .. -DCMAKE_BUILD_TYPE=Release \
+        #-DCMAKE_PREFIX_PATH=/target \
+        -DCMAKE_INSTALL_PREFIX=/target \
+        -DBUILD_ONLY="s3" \
+  ; make -j8 \
+  ; make install \
+  ; nu -c "for i in (glob '/target/lib/*' -F -S) { rm -rf \$i }" \
+  ;
+
+RUN set -eux \
+  ; mkdir -p /target/include/arrow \
+  ; mkdir -p /target/include/parquet \
+  ; cd $SRC \
+  ; git clone https://github.com/apache/arrow.git \
+  ; cd arrow/cpp \
   ; mkdir build \
   ; cd build \
+  # https://github.com/apache/arrow/blob/main/cpp/CMakePresets.json
   ; cmake .. --preset ninja-release \
         -DARROW_BUILD_INTEGRATION=OFF \
         -DARROW_BUILD_STATIC=OFF \
@@ -47,28 +58,15 @@ RUN set -eux \
         -DARROW_WITH_ZSTD=ON \
   ; cmake --build . \
   ; mv release/* /target/lib \
-  ;
-
-RUN set -eux \
-  #; cp -r $SRC/cpp/build/awssdk_ep-prefix/src/awssdk_ep/aws-cpp-sdk-core/include/aws /target/h \
-  ; cp -r $SRC/cpp/build/awssdk_ep-install/lib/libaws-cpp-sdk-core.a /target/a/ \
-  ; cp -r $SRC/cpp/build/awssdk_ep-install/lib/libaws-cpp-sdk-s3.a /target/a/ \
-  ; tree /target/lib \
   \
-  ; cd $SRC/cpp/src/arrow \
-  ; tar -cf - $(find . -name '*.h') | tar -xf - -C /target/h/arrow/ \
-  ; cp $SRC/cpp/build/src/arrow/util/config.h /target/h/arrow/util/config.h \
+  ; cd $SRC/arrow/cpp/src/arrow \
+  ; tar -cf - $(find . -name '*.h') | tar -xf - -C /target/include/arrow/ \
+  ; cp $SRC/arrow/cpp/build/src/arrow/util/config.h /target/include/arrow/util/config.h \
   \
-  ; cd $SRC/cpp/src/parquet \
-  ; tar -cf - $(find . -name '*.h') | tar -xf - -C /target/h/parquet/ \
-  ; cp $SRC/cpp/build/src/parquet/parquet_version.h /target/h/parquet/parquet_version.h \
-  \
-  ; cp -r $SRC/cpp/build/awssdk_ep-install/include/aws /target/h \
+  ; cd $SRC/arrow/cpp/src/parquet \
+  ; tar -cf - $(find . -name '*.h') | tar -xf - -C /target/include/parquet/ \
+  ; cp $SRC/arrow/cpp/build/src/parquet/parquet_version.h /target/include/parquet/parquet_version.h \
   ;
 
 FROM scratch
-
-COPY --from=assets /target/h /usr/include
-COPY --from=assets /target/a /usr/include
-COPY --from=assets /target/lib /usr/lib/x86_64-linux-gnu
-
+COPY --from=assets /target /usr
