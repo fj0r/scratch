@@ -7,7 +7,7 @@ name: zstd
 
 on:
   push:
-    branches: [ zstd ]
+    branches: [ main, zstd ]
   workflow_dispatch:
 
 env:
