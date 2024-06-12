@@ -1,4 +1,4 @@
-FROM fj0rd/scratch:dropbear-alpine as dropbear
+FROM ghcr.io/fj0r/scratch:dropbear-alpine as dropbear
 
 FROM alpine:3
 COPY --from=dropbear / /

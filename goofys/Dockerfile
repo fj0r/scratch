@@ -1,4 +1,4 @@
-FROM fj0rd/io as assets
+FROM ghcr.io/fj0r/io as assets
 
 RUN set -eux \
   ; mkdir -p /target \

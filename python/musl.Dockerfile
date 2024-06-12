@@ -1,5 +1,5 @@
-FROM fj0rd/scratch:py-test as bootstrap
-FROM fj0rd/scratch:musl as musl
+FROM ghcr.io/fj0r/scratch:py-test as bootstrap
+FROM ghcr.io/fj0r/scratch:musl as musl
 
 # https://raw.githubusercontent.com/docker-library/python/master/3.11/slim-bullseye/Dockerfile
 FROM debian:bullseye-slim as build

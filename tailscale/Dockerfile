@@ -1,4 +1,4 @@
-FROM fj0rd/io:go as assets
+FROM ghcr.io/fj0r/io:go as assets
 
 WORKDIR /build
 

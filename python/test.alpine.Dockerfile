@@ -1,4 +1,4 @@
-FROM fj0rd/scratch:py-test as py
+FROM ghcr.io/fj0r/scratch:py-test as py
 FROM alpine
 RUN set -eux \
   ; apk add --no-cache curl zstd

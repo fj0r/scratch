@@ -1,4 +1,4 @@
-FROM fj0rd/scratch:py as py
+FROM ghcr.io/fj0r/scratch:py as py
 FROM debian:bookworm-slim as tar
 COPY --from=py /python.tar.zst /
 RUN set -eux \

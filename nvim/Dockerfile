@@ -1,4 +1,4 @@
-FROM fj0rd/io:base as assets
+FROM ghcr.io/fj0r/io:base as assets
 WORKDIR /root
 
 RUN set -eux \

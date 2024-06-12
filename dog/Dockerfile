@@ -1,5 +1,5 @@
-FROM fj0rd/scratch:musl as musl
-FROM fj0rd/io:rs as build
+FROM ghcr.io/fj0r/scratch:musl as musl
+FROM ghcr.io/fj0r/io:rs as build
 
 ENV PKG_CONFIG_ALLOW_CROSS=1
 ENV OPENSSL_STATIC=true

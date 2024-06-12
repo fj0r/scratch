@@ -1,4 +1,4 @@
-FROM fj0rd/scratch:openssl1 as openssl
+FROM ghcr.io/fj0r/scratch:openssl1 as openssl
 FROM io:rs as rs
 
 ENV PKG_CONFIG_ALLOW_CROSS=1

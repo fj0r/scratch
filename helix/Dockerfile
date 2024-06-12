@@ -1,4 +1,4 @@
-FROM fj0rd/io:base as assets
+FROM ghcr.io/fj0r/io:base as assets
 RUN set -eux \
   ; mkdir -p /target/etc/helix \
   ; mkdir -p /target/usr/local/bin \
