@@ -7,7 +7,7 @@ name: tera-cli
 
 on:
   push:
-    branches: [ main, tera ]
+    branches: [ tera ]
   workflow_dispatch:
 
 env:
