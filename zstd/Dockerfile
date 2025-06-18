@@ -7,7 +7,9 @@ RUN set -eux \
         zstd xz-utils unzip tree \
         jq ripgrep git build-essential \
         musl musl-dev musl-tools \
-  ; apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* \
+  ; apt-get autoremove -y \
+  ; apt-get clean -y \
+  ; rm -rf /var/lib/apt/lists/* \
   \
   ; mkdir /dist \
   ; mkdir zstd \

@@ -22,7 +22,9 @@ RUN set -eux \
   ; cd s3fs \
   ; autoreconf --install \
   ; ./configure --prefix=/target \
-  ; make && make install
+  ; make \
+  ; make install \
+  ;
 
 FROM scratch
 

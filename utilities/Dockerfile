@@ -13,7 +13,8 @@ RUN set -eux \
   ; xh_url=$(curl --retry 3 -sSL https://api.github.com/repos/ducaale/xh/releases -H 'Accept: application/vnd.github.v3+json' \
            | jq -r '[.[]|select(.prerelease == false)][0].assets[].browser_download_url' | grep x86_64-unknown-linux-musl) \
   ; curl --retry 3 -sSL ${xh_url} | tar zxf - -C /opt/assets --strip-components=1 --wildcards '*/xh' \
-  ; cd /opt/assets && ln -s ./xh ./xhs \
+  ; cd /opt/assets \
+  ; ln -s ./xh ./xhs \
   ; cp /opt/assets/xh /usr/local/bin \
   \
   ; rq_url=$(curl --retry 3 -sSL https://api.github.com/repos/dflemstr/rq/releases -H 'Accept: application/vnd.github.v3+json' \
@@ -22,7 +23,8 @@ RUN set -eux \
   \
   ; yq_url=$(curl --retry 3 -sSL https://api.github.com/repos/mikefarah/yq/releases -H 'Accept: application/vnd.github.v3+json' \
           | jq -r '[.[]|select(.prerelease == false)][0].assets[].browser_download_url' | grep 'linux_amd64.tar') \
-  ; curl --retry 3 -sSL ${yq_url} | tar zxf - && mv yq_linux_amd64 /opt/assets/yq \
+  ; curl --retry 3 -sSL ${yq_url} | tar zxf - \
+  ; mv yq_linux_amd64 /opt/assets/yq \
   \
   ; fd_url=$(curl --retry 3 -sSL https://api.github.com/repos/sharkdp/fd/releases -H 'Accept: application/vnd.github.v3+json' \
           | jq -r '[.[]|select(.prerelease == false)][0].assets[].browser_download_url' | grep x86_64-unknown-linux-musl) \
@@ -30,7 +32,8 @@ RUN set -eux \
   \
   ; sd_url=$(curl --retry 3 -sSL https://api.github.com/repos/chmln/sd/releases -H 'Accept: application/vnd.github.v3+json' \
           | jq -r '[.[]|select(.prerelease == false)][0].assets[].browser_download_url' | grep x86_64-unknown-linux-musl) \
-  ; curl --retry 3 -sSL ${sd_url} -o /opt/assets/sd && chmod +x /opt/assets/sd \
+  ; curl --retry 3 -sSL ${sd_url} -o /opt/assets/sd \
+  ; chmod +x /opt/assets/sd \
   \
   ; rg_url=$(curl --retry 3 -sSL https://api.github.com/repos/BurntSushi/ripgrep/releases -H 'Accept: application/vnd.github.v3+json' \
           | jq -r '[.[]|select(.prerelease == false)][0].assets[].browser_download_url' | grep x86_64-unknown-linux-musl) \

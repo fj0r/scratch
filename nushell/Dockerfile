@@ -48,5 +48,7 @@ RUN set -eux \
   ; mkdir ${HOME}/.cache \
   \
   ; apt-get remove -y ${BUILD_DEPS} \
-  ; apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* \
+  ; apt-get autoremove -y \
+  ; apt-get clean -y  \
+  ; rm -rf /var/lib/apt/lists/* \
   ;

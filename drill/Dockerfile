@@ -20,7 +20,9 @@ RUN set -eux \
   ; tar zxf OpenSSL_1_1_1n.tar.gz \
   ; cd openssl-OpenSSL_1_1_1n/ \
   ; CC="musl-gcc -fPIE -pie" ./Configure no-shared no-async --prefix=/musl --openssldir=/musl/ssl linux-x86_64 \
-  ; make depend && make -j$(nproc) && make install \
+  ; make depend \
+  ; make -j$(nproc) \
+  ; make install \
   ; cargo install drill --target=x86_64-unknown-linux-musl \
   ; strip -s /usr/local/cargo/bin/drill \
   ; cp /usr/local/cargo/bin/drill /target

@@ -18,7 +18,11 @@ RUN apk --no-cache add \
 RUN git clone https://github.com/neovim/neovim.git
 
 ARG VERSION=master
-RUN cd neovim && git checkout ${VERSION} && make CMAKE_BUILD_TYPE=RelWithDebInfo install && rm -rf /neovim
+RUN cd neovim \
+; git checkout ${VERSION} \
+; make CMAKE_BUILD_TYPE=RelWithDebInfo install \
+; rm -rf /neovim \
+;
 
 FROM alpine:latest
 

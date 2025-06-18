@@ -15,7 +15,9 @@ RUN set -eux \
   ; dropbear_url=$(curl --retry 3 -sSL https://api.github.com/repos/mkj/dropbear/releases -H 'Accept: application/vnd.github.v3+json' | jq -r '.[0].tarball_url') \
   ; curl --retry 3 -sSL ${dropbear_url} | tar zxf - -C dropbear --strip-components=1 \
   ; cd dropbear \
-  ; autoconf && autoheader && ./configure --enable-static \
+  ; autoconf \
+  ; autoheader \
+  ; ./configure --enable-static \
   # dropbearkey dropbearconvert
   ; make PROGRAMS="dropbear dbclient scp" \
   ; mkdir -p /target/bin \

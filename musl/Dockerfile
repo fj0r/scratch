@@ -52,7 +52,10 @@ RUN set -eux \
         no-engine \
         linux-x86_64 \
         #-DOPENSSL_NO_SECURE_MEMORY \
-  ; make depend && make -j$(nproc) && make install
+  ; make depend \
+  ; make -j$(nproc) \
+  ; make install \
+  ;
 
 FROM debian:bookworm-slim
 COPY --from=build /opt/musl /opt/musl
